@@ -1,28 +1,46 @@
 package it.unisa.product;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Carrello {
-	private List<ProductBean> prodotti;
-	
+	private ArrayList<ItemOrder> itemsOrdered;	
 	public Carrello () {
-		prodotti = new ArrayList<ProductBean>();
+		itemsOrdered = new ArrayList<ItemOrder>();
 	}
 	
-	public void addCarrello(ProductBean bean) {
-		prodotti.add(bean);
+	public synchronized void addCarrello(int itemID) {
+		ProductModel model = new ProductModelDS();
+
+		
+		ItemOrder order;
+		
+		for(int i=0; i<itemsOrdered.size(); i++) {
+			order = (ItemOrder)itemsOrdered.get(i);
+			if(order.getItemID() == itemID) {
+				order.incrementNumItems();
+				return;
+			}
+		}	
+		
+		try{
+	    ItemOrder newOrder = new ItemOrder(model.doRetrieveByKey(itemID));
+	    itemsOrdered.add(newOrder);
+		} catch(SQLException e) {
+			e.getMessage();
+		}
 	}
 	
 	public void deleteCarrello(ProductBean bean) {
-		for(ProductBean beanC : prodotti) {
-			if(beanC.getIdProdotto() == bean.getIdProdotto())
-				prodotti.remove(beanC);
+		for(ItemOrder beanC : itemsOrdered) {
+			if(beanC.getItemID() == bean.getIdProdotto())
+				itemsOrdered.remove(beanC);
 			break;
 		}
 	}
 	
-	public List<ProductBean> getProdotti(){
-		return prodotti;
+	public List<ItemOrder> getProdotti(){
+		return itemsOrdered;
 	}
 }

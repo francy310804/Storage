@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <%@ page contentType="text/html; charset=UTF-8" 
-import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello"
+import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.unisa.product.ItemOrder"
 %>
 
 <head>
@@ -115,32 +115,39 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello"
 </div>
 
 
-	<h2>Carrello</h2>
-	<table border = "1">
-		<tr>
-			<th>Id</th>
-			<th>Nome</th>
-			<th>Prezzo</th>
-		</tr>
-		<%
-		Carrello carrello = (Carrello) session.getAttribute("carrello");
-		if(carrello != null){
-		List<ProductBean> prodotti = carrello.getProdotti();
-		for(ProductBean prodotto : prodotti){
-		%>
-	
-		
-		<tr>
-			<td><%=prodotto.getIdProdotto()%></td>
-			<td><%=prodotto.getNome()%></td>
-			<td><%=prodotto.getPrezzo()%></td>
-		</tr>
-		<%} %>
-		</table>
-		<%}
-			%>
-					
+<h2>Carrello</h2>
+<table border="1">
+    <tr>
+        <th>Nome</th>
+        <th>Prezzo</th>
+        <th>Quantità</th>
+    </tr>
 
+<%
+    Carrello carrello = (Carrello) session.getAttribute("carrello");
+    if (carrello != null) {
+        List<ItemOrder> itemsOrdered = carrello.getProdotti();
+        if (itemsOrdered.size() == 0) {
+%>
+    <tr>
+        <td colspan="3">No products in your shopping cart</td>
+    </tr>
+<%
+        } else {
+            for (ItemOrder x : itemsOrdered) {
+%>
+    <tr>
+        <td><%= x.getNome() %></td>
+        <td><%= x.getUnitCost() %></td>
+        <td><%= x.getNumItems() %></td>
+    </tr>
+<%
+            }
+        } 
+    }
+%>
+
+</table>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 	  console.log("DOM ready");

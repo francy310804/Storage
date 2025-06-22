@@ -12,9 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import java.io.PrintWriter;
 
-import java.io.PrintWriter;
-
-import java.io.PrintWriter;
 
 
 public class ProductControl extends HttpServlet {
@@ -121,8 +118,8 @@ public class ProductControl extends HttpServlet {
 					Carrello carrello = (Carrello) sessione.getAttribute("carrello");
 					if(carrello == null)
 						carrello = new Carrello();
-					ProductBean prodotto = model.doRetrieveByKey(id);
-					carrello.addCarrello(prodotto);
+					//ProductBean prodotto = model.doRetrieveByKey(id);
+					carrello.addCarrello(id);
 					sessione.setAttribute("carrello", carrello);
 					
 				}
@@ -143,7 +140,7 @@ public class ProductControl extends HttpServlet {
 		RequestDispatcher dispatcher;
 		Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
 		
-		if(isAdmin && isAdmin == true) {
+		if(Boolean.TRUE.equals(isAdmin)) {
 			dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
 			dispatcher.forward(request, response); 
 			return;
