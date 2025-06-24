@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -56,13 +57,19 @@ public class UserControl extends HttpServlet {
 			        	request.getSession().setAttribute("provincia", u.getProvincia());
 			        	request.getSession().setAttribute("Cap", u.getCap());
 						
+			        	HttpSession session = request.getSession();
+			        	session.setAttribute("user", u);
+			        	
 			        	//se è admin lo riporta alla sua pagina
 						if(u.getRuolo().equals("admin")) {
 							request.getSession().setAttribute("admin", true);
-							response.sendRedirect("protectedUser/Administrator.jsp");		
+							//response.sendRedirect("protectedUser/Administrator.jsp");	
+						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			
+
 						} else {
 							//se non è admin va alla pag. utente
-							response.sendRedirect("protectedUser/PageUtente.jsp");
+							//response.sendRedirect("protectedUser/PageUtente.jsp");
+						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			
 						}
 					}
 					else 
@@ -90,7 +97,13 @@ public class UserControl extends HttpServlet {
 					model.doSave(user);
 					response.sendRedirect("SuccRegistration.jsp");
 				}
-			}
+			} else if(action.equalsIgnoreCase("logout")) {
+			    HttpSession session = request.getSession(false); 
+			    if (session != null) {
+			        session.invalidate(); // distrugge la sessione
+			    }
+			    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			}
+				
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());

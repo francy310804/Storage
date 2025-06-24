@@ -20,12 +20,13 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.u
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" type="text/css" href="ProductStyle.css">
 	<title>Catalogo</title>
 </head>
 
 
 <body>
+
+<jsp:include page="NavBar.jsp" />
 
 <h2>Corsi</h2>
 <div class="element-container">
@@ -114,38 +115,6 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.u
   %>
 </div>
 
-
-<h2>Carrello</h2>
-<table border="1">
-    <tr>
-        <th>Nome</th>
-        <th>Prezzo</th>
-        <th>Quantità</th>
-    </tr>
-
-<%
-    Carrello carrello = (Carrello) session.getAttribute("carrello");
-    if (carrello != null) {
-        List<ItemOrder> itemsOrdered = carrello.getProdotti();
-        if (itemsOrdered.size() == 0) {
-%>
-    <tr>
-        <td colspan="3">No products in your shopping cart</td>
-    </tr>
-<%
-        } else {
-            for (ItemOrder x : itemsOrdered) {
-%>
-    <tr>
-        <td><%= x.getNome() %></td>
-        <td><%= x.getUnitCost() %></td>
-        <td><%= x.getNumItems() %></td>
-    </tr>
-<%
-            }
-        } 
-    }
-%>
 
 </table>
 <script>

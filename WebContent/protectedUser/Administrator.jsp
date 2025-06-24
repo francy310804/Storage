@@ -34,6 +34,12 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello"
 in questa pagina puoi visualizzare il materiale del sito, apportare delle modifiche e fare inserimenti
 </div>
 
+<a href="<%= request.getContextPath() %>/UserControl?action=logout">
+  <img src="<%= request.getContextPath() %>/images/logout.png" alt="Logout" style="width:40px; height:auto;">
+</a>
+<br>
+<br>
+
 <h2>Corsi</h2>
 <div class="element-container">
   <%

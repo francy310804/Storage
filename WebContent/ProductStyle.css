@@ -163,3 +163,48 @@ form input[type=reset]:hover {
   margin-right: auto;
  }
  
+nav {
+  background-color: rgb(0, 102, 204); /* blu più chiaro */
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+nav a{
+  color: white;
+  text-decoration: none;
+  padding: 0 20px;
+  position: relative;
+}
+
+nav a:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 30%;
+  height: 40%;
+  width: 1px;
+  background-color: white;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+nav a:visited{
+	color: white;
+}
+
+nav a:link {
+	color: white;
+}
+
+nav h2 {
+	color: white;
+}

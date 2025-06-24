@@ -15,8 +15,14 @@
 <body>
 
 <h1>BENVENUTO <%= session.getAttribute("nome") %> </h1>
-<form action = "ProductControl?action = modifica" method = "post">
-<!-- fa comparire i dati dell'utente per l'eventuale modifica --> 
+<form action = "<%= request.getContextPath() %>/UserControl?action = modifica" method = "post">
+<!-- fa comparire i dati dell'utente per l'eventuale modifica -->
+<a href="<%= request.getContextPath() %>/UserControl?action=logout">
+  <img src="<%= request.getContextPath() %>/images/logout.png" alt="Logout" style="width:40px; height:auto;">
+</a>
+<br>
+<br>
+
 email: <input type = "text" name = "email" value = <%= session.getAttribute("email") %>><br><br> 
 nome: <input type = "text" name = "nome" value = <%= session.getAttribute("nome") %>><br><br> 
 cognome: <input type = "text" name = "cognome" value = <%= session.getAttribute("cognome") %>><br><br> 
@@ -28,6 +34,6 @@ cap: <input type = "number" name = "cap" value =  <%= session.getAttribute("Cap"
 
 <br><br>
 
-<a href = "<%=request.getContextPath()%>/ProductView.jsp"> Visita lo store!</a>
+<a href = "<%=request.getContextPath()%>/ProductView.jsp"> Ritorna allo store</a>
 </form>
 </html>
