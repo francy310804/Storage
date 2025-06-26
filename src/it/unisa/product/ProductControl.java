@@ -2,6 +2,7 @@ package it.unisa.product;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import java.io.PrintWriter;
 
+import it.unisa.order.Carrello;
+import it.unisa.order.ItemOrder;
+import it.unisa.user.*;
 
 
 public class ProductControl extends HttpServlet {
@@ -78,14 +82,18 @@ public class ProductControl extends HttpServlet {
 					        out.print(json);
 					        out.flush();
 					        out.close();
+					        return;
 					        
 					    }
  	
 				 	
 				} else if (action.equalsIgnoreCase("delete")) {
+					
 					int id = Integer.parseInt(request.getParameter("id"));
 					model.doDelete(id);
+					
 				} else if (action.equalsIgnoreCase("insert")) {
+					
 					String name = request.getParameter("nome");
 					String categoria = request.getParameter("categoria");
 					String description = request.getParameter("descrizione");
@@ -112,6 +120,7 @@ public class ProductControl extends HttpServlet {
 					bean.setLinkAccesso(link);
 					bean.setlinkImg(linkImg);
 					model.doSave(bean);
+					
 				} else if(action.equalsIgnoreCase("add")) {
 					int id = Integer.parseInt(request.getParameter("id"));
 					HttpSession sessione = request.getSession();
@@ -122,7 +131,7 @@ public class ProductControl extends HttpServlet {
 					carrello.addCarrello(id);
 					sessione.setAttribute("carrello", carrello);
 					
-				}
+				} 
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
@@ -148,6 +157,7 @@ public class ProductControl extends HttpServlet {
 		
 		dispatcher = getServletContext().getRequestDispatcher("/ProductView.jsp");
 		dispatcher.forward(request, response); 
+		return;
 	}
     
     private String escapeJson(String s) {

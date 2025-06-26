@@ -64,7 +64,8 @@ public class UserControl extends HttpServlet {
 						if(u.getRuolo().equals("admin")) {
 							request.getSession().setAttribute("admin", true);
 							//response.sendRedirect("protectedUser/Administrator.jsp");	
-						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			
+						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");	
+						    
 
 						} else {
 							//se non è admin va alla pag. utente

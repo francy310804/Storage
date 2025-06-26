@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <%@ page contentType="text/html; charset=UTF-8" 
-import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.unisa.product.ItemOrder"
+import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.order.ItemOrder"
 %>
 
 <head>
@@ -116,7 +116,6 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.u
 </div>
 
 
-</table>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 	  console.log("DOM ready");

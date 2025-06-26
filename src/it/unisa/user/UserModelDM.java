@@ -12,6 +12,8 @@ public class UserModelDM implements UserModel{
 		 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+
 
 		String insertSQL = "INSERT INTO " + UserModelDM.TABLE_NAME
 				+ " (email, nome, cognome, indirizzo, citta, provincia, cap, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -30,6 +32,11 @@ public class UserModelDM implements UserModel{
 
 			preparedStatement.executeUpdate();
 			connection.commit();
+			  rs = preparedStatement.getGeneratedKeys();
+		        if (rs.next()) {
+		            int idGenerato = rs.getInt(1);
+		            user.setId(idGenerato); // IMPORTANTISSIMO
+		        }
 		}catch (SQLException e) {
 			if (connection != null) {
 				connection.rollback();
@@ -66,6 +73,7 @@ public class UserModelDM implements UserModel{
 
 			while (rs.next()) {
 				bean = new UserBean();
+				bean.setId(rs.getInt("id"));
 				bean.setCap(rs.getInt("cap"));
 				bean.setCitta(rs.getString("citta"));
 				bean.setCognome(rs.getString("cognome"));

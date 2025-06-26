@@ -2,9 +2,10 @@ package it.unisa.user;
 
 public class UserBean {
 	String nome, cognome, email, citta, provincia, password, indirizzo, ruolo;
-	int cap;
+	int cap, id;
 	
 	public UserBean() {
+		this.id = -1;
 		this.nome = null;
 		this.cognome = null;
 		this.email = null;
@@ -16,7 +17,15 @@ public class UserBean {
 		this.ruolo = null;
 		
 	}
-
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getId() {
+		return this.id;
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -91,7 +100,7 @@ public class UserBean {
 
 	@Override
 	public String toString() {
-		return "UserBean [nome=" + nome + ", cognome=" + cognome + ", email=" + email + ", citta=" + citta
+		return "UserBean [id = " + id + ", nome=" + nome + ", cognome=" + cognome + ", email=" + email + ", citta=" + citta
 				+ ", provincia=" + provincia + ", password=" + password + ", cap=" + cap + " indirizzo= " + indirizzo + "]";
 	}
 	

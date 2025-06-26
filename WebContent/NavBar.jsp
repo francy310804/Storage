@@ -14,7 +14,9 @@
   <a href="<%= request.getContextPath() %>/ProductView.jsp">Home</a>
 
   <% 
-    if (session.getAttribute("user") != null) { 
+    if (session.getAttribute("user") != null) {
+    	%>
+	<a href="<%= request.getContextPath() %>/OrderControl?action=viewFatture">I miei ordini</a>   <%
       Boolean isAdmin = (Boolean) session.getAttribute("admin");
       if (isAdmin != null && isAdmin) { 
   %>
@@ -23,6 +25,8 @@
       } else { 
   %>
         <a href="<%= request.getContextPath() %>/protectedUser/PageUtente.jsp">Area Utente</a>
+          <a href="Carrello.jsp">Carrello</a>
+        
   <% 
       } 
   %>
@@ -36,7 +40,6 @@
     } 
   %>
 
-  <a href="Carrello.jsp">Carrello</a>
   <a href="Contatti.jsp">Contatti</a>
 </nav>
 

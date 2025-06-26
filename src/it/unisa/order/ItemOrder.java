@@ -1,5 +1,6 @@
-package it.unisa.product;
+package it.unisa.order;
 
+import it.unisa.product.ProductBean;
 
 /* Questa classe rappresenta la voce del nostro carrello
 che è formata dal productBean + la relativa quantità*/
@@ -8,6 +9,9 @@ public class ItemOrder {
 	private ProductBean item;
 	private int numItems;
 	
+	public ItemOrder() {
+		
+	}
 	
 	public ItemOrder(ProductBean item) {
 	    setItem(item);
@@ -24,6 +28,10 @@ public class ItemOrder {
 	
 	protected void setItem(ProductBean item) {
 		this.item = item;
+	}
+	
+	public String getLinkImg() {
+		return(getItem().getLinkImg());
 	}
 	
 	public String getNome() {

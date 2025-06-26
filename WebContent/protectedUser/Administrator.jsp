@@ -15,7 +15,7 @@
 <!DOCTYPE html>
 <html>
 <%@ page contentType="text/html; charset=UTF-8" 
-import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello"
+import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello"
 %>
 
 

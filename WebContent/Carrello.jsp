@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import="java.util.*,it.unisa.product.ProductBean,it.unisa.product.Carrello, it.unisa.product.ItemOrder"
+    import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.order.ItemOrder"
     %>
 <!DOCTYPE html>
 <html>
@@ -44,6 +44,14 @@
     }
 %>
 
+<%if(carrello != null) {%>
+
+<form action="OrderControl" method="post">
+  <input type="hidden" name="action" value="checkout">
+  <button type="submit">Acquista</button>
+</form>
+
+<%} %>
 
 </body>
 </html>

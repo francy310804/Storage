@@ -6,11 +6,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+
+import it.unisa.order.ItemOrder;
+
+import java.sql.Statement;
 
 public class ProductModelDS implements ProductModel {
 	private static DataSource ds;

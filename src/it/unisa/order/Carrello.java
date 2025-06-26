@@ -1,8 +1,12 @@
-package it.unisa.product;
+package it.unisa.order;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import it.unisa.product.ProductBean;
+import it.unisa.product.ProductModel;
+import it.unisa.product.ProductModelDS;
 
 public class Carrello {
 	private ArrayList<ItemOrder> itemsOrdered;	
@@ -38,6 +42,17 @@ public class Carrello {
 				itemsOrdered.remove(beanC);
 			break;
 		}
+	}
+	
+	
+	public double getTotale() {
+		
+		double tot = 0;
+		for(ItemOrder bean: itemsOrdered) {
+			tot+= bean.getTotalCost();
+		}
+		
+		return tot;
 	}
 	
 	public List<ItemOrder> getProdotti(){

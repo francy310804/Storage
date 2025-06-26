@@ -208,3 +208,9 @@ nav a:link {
 nav h2 {
 	color: white;
 }
+
+.small-img {
+  width: 40px;
+  height: auto;
+  object-fit: cover;
+}
