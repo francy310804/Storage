@@ -144,26 +144,22 @@ public class OrderControl extends HttpServlet {
 			                message.setSubject("Fattura SpeakUp");
 			                
 			                StringBuilder testo = new StringBuilder();
-			                testo.append("SpeakUp\n"
-			                +"Via Giovanni Paolo II, 132\n"
-			                +"84084 Fisciano SA - Italia\n"
-			                +"P.IVA: 12345678901\n"
-			                +"Tel: +39 02 1234567 - Email: "+  username+"\n\n\n")
-			                .append("FATTURA N°"+f.getIdFattura())
-			                .append("\nData: "+f.getDataOrdine())
-			                .append("\nCliente:")
-			                .append("\n"+user.getNome()+" "+user.getCognome())
-			                .append("\n"+user.getIndirizzo())
-			                .append("\n"+user.getCap()+" "+user.getCitta()+" "+user.getProvincia()).append("\n\n")
-			                .append("#\tDescrizione\tPrezzo Unitario(€)\tQuantità\tIVA %\tTotale(€)");
-			                int i=1;
-			                double totale = 0;
-			                for(ItemOrder item : dettagli) {
-			                	int id;
-			                	totale +=item.getTotalCost();
-			                	testo.append(i+"\t"+item.getNome()+"\t"+item.getUnitCost()+"\t"+item.getNumItems()+"\t"+item.getIva()+"\t"+item.getTotalCost()+"\n");
-			                }
-			                testo.append("\n\n"+"Totale(iva inclusa): "+totale);
+			                testo.append(String.format("%-3s %-20s %18s %10s %7s %15s\n",
+			                         "#", "Descrizione", "Prezzo Unitario(€)", "Quantità", "IVA %", "Totale(€)"));
+			testo.append("--------------------------------------------------------------------------------\n");
+			int i = 1;
+			double totale = 0;
+			for (ItemOrder item : dettagli) {
+			    totale += item.getTotalCost();
+			    testo.append(String.format("%-3d %-20s %18.2f %10d %7d %15.2f\n",
+			                             i++,
+			                             item.getNome(),
+			                             item.getUnitCost(),
+			                             item.getNumItems(),
+			                             item.getIva(),
+			                             item.getTotalCost()));
+			}
+			testo.append("\nTotale (iva inclusa): ").append(totale);
 			               message.setText(testo.toString());
 
 			                Transport.send(message);
