@@ -20,7 +20,7 @@ public class UserModelDM implements UserModel{
 
 		try {
 			connection = DriverManagerConnectionPool.getConnection();
-			preparedStatement = connection.prepareStatement(insertSQL);
+			preparedStatement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);;
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getNome());
 			preparedStatement.setString(3, user.getCognome());

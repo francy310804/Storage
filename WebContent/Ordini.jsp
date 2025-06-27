@@ -33,7 +33,8 @@
                 <td><%= fattura.getIdFattura() %></td>
                 <td><%= fattura.getDataOrdine() %></td>
                 <td><%= String.format("%.2f", fattura.getPrezzoTotale()) %> €</td>
-                <td><a href="OrderControl?action=viewOrdineCompleto&idFattura=<%= fattura.getIdFattura() %>">Vedi dettagli</a></td>
+                <td><a href="OrderControl?action=viewOrdineCompleto&idFattura=<%= fattura.getIdFattura() %>">Vedi dettagli</a><br>
+                	<a href="OrderControl?action=inviofattura&idFattura=<%= fattura.getIdFattura() %>">Ricevi fattura</a></td>
             </tr>
         <% } %>
         </tbody>

@@ -61,4 +61,8 @@ public class ItemOrder {
 	public double getTotalCost() {
 		return(getNumItems() * getUnitCost());
 	}
+	
+	public int getIva(){
+		return(getItem().getIva());
+	}
 }
