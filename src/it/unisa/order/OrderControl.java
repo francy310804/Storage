@@ -140,7 +140,7 @@ public class OrderControl extends HttpServlet {
 			                Message message = new MimeMessage(email);
 			                message.setFrom(new InternetAddress(username));
 			                message.setRecipients(Message.RecipientType.TO,
-			                        InternetAddress.parse("olivolalorenzo@gmail.com"));
+			                        InternetAddress.parse(user.getEmail()));
 			                message.setSubject("Fattura SpeakUp");
 			                
 			                StringBuilder testo = new StringBuilder();
