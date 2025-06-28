@@ -28,7 +28,7 @@
             double totale = item.getNumItems() * item.getUnitCost();
     %>
     <tr>
-        <td><%= item.getItemID() %></td>
+        <td><%= item.getNome() %></td>
         <td><img src="<%= request.getContextPath() + "/" + item.getLinkImg() %>" alt="img prodotto" width = "100" height="100"/></td>
         <td><%= item.getNumItems() %></td>
         <td>€ <%= String.format("%.2f", item.getUnitCost()) %></td>

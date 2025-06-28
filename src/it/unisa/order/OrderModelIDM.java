@@ -134,7 +134,7 @@ public class OrderModelIDM implements OrderModel {
 
 		    List<ItemOrder> items = new ArrayList<>();
 
-		    String sql = "SELECT product_id, image_url, quantity, price FROM order_details WHERE order_id = ?";
+		    String sql = "SELECT product_id, image_url, quantity, price, iva FROM order_details WHERE order_id = ?";
 
 		    try {
 		        con = ds.getConnection(); // Assumendo che tu abbia un DataSource `ds`
@@ -144,16 +144,26 @@ public class OrderModelIDM implements OrderModel {
 		        rs = ps.executeQuery();
 
 		        while (rs.next()) {
-		        	ProductBean p = new ProductBean();
-		            ItemOrder item = new ItemOrder();
-		            p.setIdProdotto(rs.getInt("product_id"));
-		            p.setlinkImg(rs.getString("image_url"));
-		            item.setNumItems(rs.getInt("quantity"));
-		            float prezzo = (float)rs.getDouble("price");
-		            p.setPrezzo(prezzo);
-		            item.setItem(p);
-
-		            items.add(item);
+		        	// per prendere delle informazioni mancanti del prodotto (il nome)
+		        	ResultSet rp = null;
+		        	sql = "SELECT nome FROM prodotto WHERE idProdotto = ?";
+		        	ps = con.prepareStatement(sql);
+		        	ps.setInt(1, rs.getInt("product_id"));
+		        	rp = ps.executeQuery();
+		        	while (rp.next()) {
+		        		ProductBean p = new ProductBean();
+		            	ItemOrder item = new ItemOrder();
+		            	p.setIdProdotto(rs.getInt("product_id"));
+		            	p.setNome(rp.getString("nome"));
+		            	p.setlinkImg(rs.getString("image_url"));
+		            	item.setNumItems(rs.getInt("quantity"));
+		            	float prezzo = (float)rs.getDouble("price");
+		            	p.setPrezzo(prezzo);
+		            	p.setIva(rs.getInt("iva"));
+		            	item.setItem(p);
+		            
+		            	items.add(item);
+		        	}
 		        }
 
 		    } catch (SQLException e) {

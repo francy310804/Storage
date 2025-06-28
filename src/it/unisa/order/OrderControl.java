@@ -144,9 +144,21 @@ public class OrderControl extends HttpServlet {
 			                message.setSubject("Fattura SpeakUp");
 			                
 			                StringBuilder testo = new StringBuilder();
+			                testo.append("SpeakUp\n"
+			                +"Via Giovanni Paolo II, 132\n"
+			                +"84084 Fisciano SA - Italia\n"
+			                +"P.IVA: 12345678901\n"
+			                +"Tel: +39 02 1234567 - Email: "+  username+"\n\n\n")
+			                .append("FATTURA N°"+f.getIdFattura())
+			                .append("\nData: "+f.getDataOrdine())
+			                .append("\nCliente:")
+			                .append("\n"+user.getNome()+" "+user.getCognome())
+			                .append("\n"+user.getIndirizzo())
+			                .append("\n"+user.getCap()+" "+user.getCitta()+" "+user.getProvincia()).append("\n\n");
+			                
 			                testo.append(String.format("%-3s %-20s %18s %10s %7s %15s\n",
 			                         "#", "Descrizione", "Prezzo Unitario(€)", "Quantità", "IVA %", "Totale(€)"));
-			testo.append("--------------------------------------------------------------------------------\n");
+			testo.append("--------------------------------------------------------------------------------------------------\n");
 			int i = 1;
 			double totale = 0;
 			for (ItemOrder item : dettagli) {
