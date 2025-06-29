@@ -10,6 +10,8 @@ public interface OrderModel {
 	public List<FatturaBean> RetrieveFattura(int id) throws SQLException; //tramite id utente
 	
 	public List<ItemOrder> RetrieveByFattura(int id) throws SQLException;
+	
+	public void doSaveReview(Review r) throws SQLException;
 
 
 }

@@ -9,6 +9,7 @@
 
 </head>
 <body>
+<jsp:include page="NavBar.jsp" />
 
 <%
     List<ItemOrder> items = (List<ItemOrder>) request.getAttribute("dettagliFattura");

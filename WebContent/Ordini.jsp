@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
 </head>
 <body>
+<jsp:include page="NavBar.jsp" />
+
 <h1>Storico ordini di <%= session.getAttribute("nome") %> </h1>
 
 <%

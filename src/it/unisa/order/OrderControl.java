@@ -1,6 +1,7 @@
 package it.unisa.order;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -191,6 +192,22 @@ public class OrderControl extends HttpServlet {
 			        request.setAttribute("fatture", fatture);
 			        RequestDispatcher dispatcher = request.getRequestDispatcher("/Ordini.jsp");
 			        dispatcher.forward(request, response);
+			        return;
+			        
+				} else if("review".equals(action)) {
+					
+					HttpSession session = request.getSession();
+					
+					Review r = new Review();
+					r.setComment(request.getParameter("comment"));
+					int pId = Integer.parseInt(request.getParameter("productId"));
+					r.setProductId(pId);
+					r.setRating(Integer.parseInt(request.getParameter("rating")));
+					UserBean usr = (UserBean)session.getAttribute("user");
+					r.setUserId(usr.getId());
+					r.setReviewDate(new Timestamp(System.currentTimeMillis()));					
+					model.doSaveReview(r);
+			        response.sendRedirect("ProductView.jsp");
 			        return;
 				}
 			

@@ -25,7 +25,6 @@
       } else { 
   %>
         <a href="<%= request.getContextPath() %>/protectedUser/PageUtente.jsp">Area Utente</a>
-          <a href="Carrello.jsp">Carrello</a>
         
   <% 
       } 
@@ -39,9 +38,26 @@
   <% 
     } 
   %>
+        <a href="Carrello.jsp">Carrello</a>
 
   <a href="Contatti.jsp">Contatti</a>
+ 
+  <div id="google_translate_element"></div>
+	
+
 </nav>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'it',
+    includedLanguages: 'it,en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script>
 
 </body>
 </html>

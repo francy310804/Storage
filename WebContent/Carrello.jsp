@@ -6,11 +6,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Chart</title>
   <link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
 
 </head>
 <body>
+
+<jsp:include page="NavBar.jsp" />
+
 
 <h2>Carrello</h2>
 <table border="1">

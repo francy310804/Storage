@@ -55,8 +55,8 @@ public class OrderModelIDM implements OrderModel {
 	            throw new SQLException("Errore nella generazione dell'ID ordine.");
 	        }
 
-	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price, iva) VALUES (?, ?, ?, ?, ?, ?)";
-	        psDettagli = connection.prepareStatement(sqlDettagli);
+	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price) VALUES (?, ?, ?, ?, ?)";
+	        psDettagli = connection.prepareStatement(sqlDettagli);		//ci sta anche l'iva come campo, tolto momentaneamente, mi serve l'sql
 
 	        for (ItemOrder item : l) {
 	            psDettagli.setInt(1, idOrdine);
@@ -64,7 +64,7 @@ public class OrderModelIDM implements OrderModel {
 	            psDettagli.setString(3, item.getLinkImg());
 	            psDettagli.setInt(4, item.getNumItems());
 	            psDettagli.setDouble(5, item.getUnitCost());
-	            psDettagli.setDouble(6, item.getIva());
+	          //  psDettagli.setDouble(6, item.getIva());
 	            psDettagli.executeUpdate();
 	        }
 
@@ -180,5 +180,35 @@ public class OrderModelIDM implements OrderModel {
 
 		    return items;
 		
+	}
+	
+	public synchronized void doSaveReview(Review r) {
+	    Connection con = null;
+	    PreparedStatement ps = null;
+
+	    String sql = "INSERT INTO reviews (product_id, user_id, rating, comment, created_at) VALUES (?, ?, ?, ?, ?)";
+
+	    try {
+	        con = ds.getConnection(); // Assumendo che tu abbia un DataSource `ds`
+	        ps = con.prepareStatement(sql);
+
+	        ps.setInt(1, r.getProductId());
+	        ps.setInt(2, r.getUserId());
+	        ps.setInt(3, r.getRating());
+	        ps.setString(4, r.getComment());
+	        ps.setTimestamp(5, r.getReviewDate());
+
+	        ps.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Puoi sostituirlo con un logger se vuoi
+	    } finally {
+	        try {
+	            if (ps != null) ps.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 }

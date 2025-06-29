@@ -45,6 +45,7 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unis
   <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
   <div class="element-actions">
   <button class="details-btn" data-id="<%=bean.getIdProdotto()%>">Details</button>    
+  <a class="review" href="writeReview.jsp?productId=<%=bean.getIdProdotto()%>">Review</a>  
   <a href="product?action=add&id=<%=bean.getIdProdotto()%>">AddCarrello</a>
 </div>
     </div>
@@ -105,6 +106,8 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unis
   <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
   <div class="element-actions">
 <button class="details-btn" data-id="<%=bean.getIdProdotto()%>">Details</button>   
+  <a class="review" href="writeReview.jsp?productId=<%=bean.getIdProdotto()%>">Review</a>  
+
  <a href="product?action=add&id=<%=bean.getIdProdotto()%>">AddCarrello</a>
 </div>
     </div>
@@ -203,8 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('close-popup').addEventListener('click', () => {
 	  document.getElementById('details-container').style.display = 'none';
 	});
-	
+
 </script>
+
+
+
+
+
 </body>
 </html>
 
