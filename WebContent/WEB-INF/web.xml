@@ -26,6 +26,15 @@
     <servlet-name>UserControl</servlet-name>
     <url-pattern>/user</url-pattern>
   </servlet-mapping>
+  <servlet>
+  <servlet-name>OrderControl</servlet-name>
+  <servlet-class>it.unisa.order.OrderControl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  <servlet-name>OrderControl</servlet-name>
+  <url-pattern>/order</url-pattern>
+  </servlet-mapping>
+  
   
   <filter>
   	<filter-name>AuthFilter</filter-name>

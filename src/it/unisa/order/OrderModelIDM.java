@@ -211,4 +211,35 @@ public class OrderModelIDM implements OrderModel {
 	        }
 	    }
 	}
+	
+	public List<Review> getReviewsByProductId(int productId) throws SQLException {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    ResultSet rs = null;
+	    List<Review> reviews = new ArrayList<>();
+
+	    String sql = "SELECT rating, comment FROM reviews WHERE product_id = ?";
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement.setInt(1, productId);
+
+	        rs = preparedStatement.executeQuery();
+
+	        while (rs.next()) {
+	            Review review = new Review();
+	            review.setRating(rs.getInt("rating"));
+	            review.setComment(rs.getString("comment"));
+	            reviews.add(review);
+	        }
+
+	    } finally {
+	        if (rs != null) try { rs.close(); } catch (SQLException ignore) {}
+	        if (preparedStatement != null) try { preparedStatement.close(); } catch (SQLException ignore) {}
+	        connection.close();
+	    }
+
+	    return reviews;
+	}
 }

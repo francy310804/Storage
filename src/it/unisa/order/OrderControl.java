@@ -217,6 +217,19 @@ public class OrderControl extends HttpServlet {
 		}
 		
 		
+		try {
+
+			int id = Integer.parseInt(request.getParameter("productId"));
+			request.setAttribute("reviews", model.getReviewsByProductId(id));
+		} catch(Exception e) {
+			System.out.println("Error:" + e.getMessage());
+		}
+		
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/writeReview.jsp");
+		dispatcher.forward(request, response); 
+		return;
+		
+		
 		
 	}
 

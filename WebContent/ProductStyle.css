@@ -238,3 +238,16 @@ nav h2 {
   color: gold;
 }
 
+
+
+
+.review-stars {
+    font-size: 18px;
+    /* serve per il colore di default delle stelle piene */
+    color: #f5b301; /* oro */
+}
+
+.review-stars .empty-star {
+    color: #ccc; /* grigio chiaro per stelle vuote */
+}
+

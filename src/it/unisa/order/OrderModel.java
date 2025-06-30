@@ -12,6 +12,7 @@ public interface OrderModel {
 	public List<ItemOrder> RetrieveByFattura(int id) throws SQLException;
 	
 	public void doSaveReview(Review r) throws SQLException;
-
+	
+	public List<Review> getReviewsByProductId(int productId) throws SQLException;
 
 }
