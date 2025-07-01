@@ -76,9 +76,9 @@ public class UserControl extends HttpServlet {
 						
 						HttpSession session = request.getSession();
 						session.setAttribute("admin", true);
-						session.setAttribute("email", u.getEmail());
-			        	session.setAttribute("nome", u.getNome());
-			        	session.setAttribute("cognome", u.getCognome());
+						session.setAttribute("email", a.getEmail());
+			        	session.setAttribute("nome", a.getNome());
+			        	session.setAttribute("cognome", a.getCognome());
 			        	session.setAttribute("user", a);
 
 			        	response.sendRedirect("protectedUser/Administrator.jsp");

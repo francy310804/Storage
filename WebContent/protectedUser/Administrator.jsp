@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" session = "true" %>
-
-
 <%
+	 Boolean isAdmin = (Boolean) session.getAttribute("admin");
 	Collection<?> products = (Collection<?>) request.getAttribute("products");
 	if(products == null) {
 		
@@ -14,6 +13,11 @@
 
 <!DOCTYPE html>
 <html>
+<%
+    if (Boolean.TRUE.equals(isAdmin)) {
+%>
+
+
 <%@ page contentType="text/html; charset=UTF-8" 
 import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello"
 %>
@@ -123,11 +127,14 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
   %>
 </div>
 
-
+    <form action="UploadServlet" method="post" >
+        Nome Immagine: <input type="text" name="nome"><br>
+        
+        <input type="submit" value="Carica">
 
 <div>
     <h2>Insert</h2>
-	<form action="product?action=insert" method="post">
+	<form action="product?action=insert" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="action" value="insert"> 
 		
 		<label for="nome">Nome:</label><br> 
@@ -158,8 +165,9 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 		<label for="LinkAccesso">Link Accesso:</label><br> 
 		<textarea name="linkaccesso" maxlength="100" rows="3" required placeholder="inserisci link accesso"></textarea><br>
 
-		<label for="linkImg">link Immagine:</label><br>
-		<textarea name="linkImg" maxlength="100" rows="3" required placeholder="inserisci link immagine"></textarea><br>
+		<label for="InsertImg">Seleziona immagine: </label><br>
+		
+        <input id="IsertImg" type="file" name="file" accept="image/*" ><br>
 		
 		<input type="submit" value="Add"><input type="reset" value="Reset">
 
@@ -258,4 +266,15 @@ document.getElementById('close-popup').addEventListener('click', () => {
 </script>
 
 </body>
+
+<%}else { %>
+<head>
+<meta http-equiv="refresh" content="5;URL=Login.jsp">
+<title>ACCESSO NEGATO</title>
+</head>
+<body>
+<p style="color:red;"><h1>ACCESSO NEGATO SARAI RINDIRIZZATO TRA 5 SECONDI</h1></p>
+</body>
+
+<%} %>
 </html>
