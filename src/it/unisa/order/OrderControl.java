@@ -172,7 +172,7 @@ public class OrderControl extends HttpServlet {
 			                             item.getIva(),
 			                             item.getTotalCost()));
 			}
-			testo.append("\nTotale (iva inclusa): ").append(totale);
+			testo.append("\nTotale (iva inclusa): ").append(String.format("%15.2f",totale)).append("€");
 			               message.setText(testo.toString());
 
 			                Transport.send(message);

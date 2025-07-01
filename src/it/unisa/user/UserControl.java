@@ -54,7 +54,14 @@ public class UserControl extends HttpServlet {
 						
 
 			        	HttpSession session = request.getSession();
-						session.setAttribute("admin", false);
+			        	session.setAttribute("admin", false);
+			        	session.setAttribute("email", u.getEmail());
+			        	session.setAttribute("nome", u.getNome());
+			        	session.setAttribute("cognome", u.getCognome());
+			        	session.setAttribute("indirizzo", u.getIndirizzo());
+			        	session.setAttribute("città", u.getCitta());
+			        	session.setAttribute("provincia", u.getProvincia());
+			        	session.setAttribute("Cap", u.getCap());
 			        	session.setAttribute("user", u);
 			        	
 			        	//response.sendRedirect("protectedUser/PageUtente.jsp");
@@ -69,15 +76,9 @@ public class UserControl extends HttpServlet {
 						
 						HttpSession session = request.getSession();
 						session.setAttribute("admin", true);
-						session.setAttribute("admin", false);
-			        	session.setAttribute("email", u.getEmail());
+						session.setAttribute("email", u.getEmail());
 			        	session.setAttribute("nome", u.getNome());
 			        	session.setAttribute("cognome", u.getCognome());
-			        	session.setAttribute("indirizzo", u.getIndirizzo());
-			        	session.setAttribute("città", u.getCitta());
-			        	session.setAttribute("provincia", u.getProvincia());
-			        	session.setAttribute("Cap", u.getCap());
-						
 			        	session.setAttribute("user", a);
 
 			        	response.sendRedirect("protectedUser/Administrator.jsp");

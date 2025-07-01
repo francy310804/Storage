@@ -55,8 +55,8 @@ public class OrderModelIDM implements OrderModel {
 	            throw new SQLException("Errore nella generazione dell'ID ordine.");
 	        }
 
-	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price) VALUES (?, ?, ?, ?, ?)";
-	        psDettagli = connection.prepareStatement(sqlDettagli);		//ci sta anche l'iva come campo, tolto momentaneamente, mi serve l'sql
+	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price,iva) VALUES (?, ?, ?, ?, ?,?)";
+	        psDettagli = connection.prepareStatement(sqlDettagli);
 
 	        for (ItemOrder item : l) {
 	            psDettagli.setInt(1, idOrdine);
@@ -64,7 +64,7 @@ public class OrderModelIDM implements OrderModel {
 	            psDettagli.setString(3, item.getLinkImg());
 	            psDettagli.setInt(4, item.getNumItems());
 	            psDettagli.setDouble(5, item.getUnitCost());
-	          //  psDettagli.setDouble(6, item.getIva());
+	            psDettagli.setDouble(6, item.getIva());
 	            psDettagli.executeUpdate();
 	        }
 
