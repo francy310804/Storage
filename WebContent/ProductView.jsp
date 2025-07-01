@@ -120,6 +120,10 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unis
 
 
 <script>
+  const contextPath = "<%= request.getContextPath() %>";
+</script>
+
+<script>
 document.addEventListener('DOMContentLoaded', () => {
 	  console.log("DOM ready");
 	
@@ -182,10 +186,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // aggiungiamo lingua, IVA e prezzo
-        html += 
-          '<p><strong>Lingua:</strong> ' + data.lingua + '</p>' +
-          '<p><strong>IVA:</strong> ' + data.iva + '%</p>' +
-          '<p><strong>Prezzo:</strong> €' + data.prezzo + '</p>';
+		html += 
+  			'<p><strong>Lingua:</strong> ' + data.lingua + '</p>' +
+  			'<p><strong>IVA:</strong> ' + data.iva + '%</p>' +
+  			'<p><strong>Prezzo:</strong> €' + data.prezzo + '</p>' +
+ 			'<a href="product?action=add&id=' + data.IdProdotto + '">' +
+   	 		'<img src="' + contextPath + '/images/chart.jpg" alt="chart" style="width:60px; height:auto; display: block; margin: 0 auto;">' +
+			'</a>';
+
 
         // inserisce l'html nel div
         popupContent.innerHTML = html;

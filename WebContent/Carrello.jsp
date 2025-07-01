@@ -1,26 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
     import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.order.ItemOrder"
-    %>
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Chart</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
-
+<link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
 </head>
 <body>
 
 <jsp:include page="NavBar.jsp" />
 
-
 <h2>Carrello</h2>
+
 <table border="1">
     <tr>
         <th>Nome</th>
         <th>Prezzo</th>
         <th>Quantità</th>
+        <th>Rimuovi</th>
     </tr>
 
 <%
@@ -30,7 +30,7 @@
         if (itemsOrdered.size() == 0) {
 %>
     <tr>
-        <td colspan="3">No products in your shopping cart</td>
+        <td colspan="4">No products in your shopping cart</td>
     </tr>
 <%
         } else {
@@ -38,23 +38,36 @@
 %>
     <tr>
         <td><%= x.getNome() %></td>
-        <td><%= x.getUnitCost() %></td>
+        <td><%= String.format("%.2f", x.getUnitCost()) %> €</td>
         <td><%= x.getNumItems() %></td>
+        <td>
+		<form action="${pageContext.request.contextPath}/product" method="post">
+                <input type="hidden" name="action" value="remove">
+                <input type="hidden" name="id" value="<%= x.getItemID() %>">
+				<button type="submit" style="background:none; border:none; padding:0; margin:0; line-height:0; font-size:0; width:30px; height:30px; cursor:pointer;">
+    			<img src="<%= request.getContextPath() %>/images/trash.png" alt="Rimuovi" style="width:30px; height:30px; display:block;">
+				</button>          
+        	</form>
+        </td>
     </tr>
 <%
             }
         } 
     }
 %>
+</table>
 
-<%if(carrello != null) {%>
+<% if (carrello != null && !carrello.getProdotti().isEmpty()) { %>
+
+<p>
+    Totale carrello: <strong><%= String.format("%.2f", carrello.getTotale()) %> €</strong>
+</p>
 
 <form action="OrderControl" method="post">
-  <input type="hidden" name="action" value="checkout">
-  <button type="submit">Acquista</button>
+    <input type="hidden" name="action" value="checkout">
+    <button type="submit" style="width:60px; height:40px;">Acquista</button>
 </form>
-
-<%} %>
+<% } %>
 
 </body>
 </html>

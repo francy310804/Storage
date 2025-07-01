@@ -36,14 +36,20 @@ public class Carrello {
 		}
 	}
 	
-	public void deleteCarrello(ProductBean bean) {
-		for(ItemOrder beanC : itemsOrdered) {
-			if(beanC.getItemID() == bean.getIdProdotto())
-				itemsOrdered.remove(beanC);
-			break;
-		}
+	public void deleteCarrello(int id) {
+	    for(ItemOrder beanC : itemsOrdered) {
+	        if(beanC.getItemID() == id) {
+	            int qta = beanC.getNumItems();
+	            if(qta > 1) {
+	                beanC.setNumItems(qta - 1);
+	            } else {
+	                // se la quantità arriva a zero, rimuovi l'intero item
+	                itemsOrdered.remove(beanC);
+	            }
+	            break;
+	        }
+	    }
 	}
-	
 	
 	public double getTotale() {
 		

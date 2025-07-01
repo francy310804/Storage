@@ -127,60 +127,54 @@ public class OrderModelIDM implements OrderModel {
 	}
 	
 	public synchronized List<ItemOrder> RetrieveByFattura(int id) {
-		
-		 Connection con = null;
-		    PreparedStatement ps = null;
-		    ResultSet rs = null;
+	    Connection con = null;
+	    PreparedStatement ps = null;
+	    ResultSet rs = null;
 
-		    List<ItemOrder> items = new ArrayList<>();
+	    List<ItemOrder> items = new ArrayList<>();
 
-		    String sql = "SELECT product_id, image_url, quantity, price, iva FROM order_details WHERE order_id = ?";
+	    String sql = "SELECT od.product_id, od.image_url, od.quantity, od.price, "
+	               + "p.nome, p.linkImg "
+	               + "FROM order_details od "
+	               + "JOIN prodotto p ON od.product_id = p.idProdotto "
+	               + "WHERE od.order_id = ?";
 
-		    try {
-		        con = ds.getConnection(); // Assumendo che tu abbia un DataSource `ds`
-		        ps = con.prepareStatement(sql);
-		        ps.setInt(1, id);
+	    try {
+	        con = ds.getConnection();
+	        ps = con.prepareStatement(sql);
+	        ps.setInt(1, id);
+	        rs = ps.executeQuery();
 
-		        rs = ps.executeQuery();
+	        while (rs.next()) {
+	            ProductBean p = new ProductBean();
+	            ItemOrder item = new ItemOrder();
 
-		        while (rs.next()) {
-		        	// per prendere delle informazioni mancanti del prodotto (il nome)
-		        	ResultSet rp = null;
-		        	sql = "SELECT nome FROM prodotto WHERE idProdotto = ?";
-		        	ps = con.prepareStatement(sql);
-		        	ps.setInt(1, rs.getInt("product_id"));
-		        	rp = ps.executeQuery();
-		        	while (rp.next()) {
-		        		ProductBean p = new ProductBean();
-		            	ItemOrder item = new ItemOrder();
-		            	p.setIdProdotto(rs.getInt("product_id"));
-		            	p.setNome(rp.getString("nome"));
-		            	p.setlinkImg(rs.getString("image_url"));
-		            	item.setNumItems(rs.getInt("quantity"));
-		            	float prezzo = (float)rs.getDouble("price");
-		            	p.setPrezzo(prezzo);
-		            	p.setIva(rs.getInt("iva"));
-		            	item.setItem(p);
-		            
-		            	items.add(item);
-		        	}
-		        }
+	            p.setIdProdotto(rs.getInt("product_id"));
+	            p.setNome(rs.getString("nome"));
+	            p.setlinkImg(rs.getString("linkImg")); // prendi l'immagine dal prodotto
+	            p.setPrezzo((float) rs.getDouble("price"));
+	            item.setNumItems(rs.getInt("quantity"));
+	            item.setItem(p);
 
-		    } catch (SQLException e) {
-		        e.printStackTrace(); // Puoi gestirla meglio con un logger
-		    } finally {
-		        try {
-		            if (rs != null) rs.close();
-		            if (ps != null) ps.close();
-		            if (con != null) con.close();
-		        } catch (SQLException e) {
-		            e.printStackTrace();
-		        }
-		    }
+	            items.add(item);
+	        }
 
-		    return items;
-		
+	    } catch (SQLException e) {
+	        e.printStackTrace(); 
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	            if (ps != null) ps.close();
+	            if (con != null) con.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return items;
 	}
+	
+	
 	
 	public synchronized void doSaveReview(Review r) {
 	    Connection con = null;

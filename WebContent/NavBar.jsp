@@ -6,18 +6,41 @@
   <meta charset="UTF-8">
   <title>SpeakUp</title>
   <link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
-  <style type="text/css">
-  #results {
-  position: absolute;
-  background: white;
+<style type="text/css">
+/* Campo di ricerca principale */
+#search-input {
+  width: 300px;
+  padding: 10px 40px 10px 16px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  max-height: 200px;
+  border-radius: 25px;
+  background-color: #fff;
+  transition: border 0.3s, box-shadow 0.3s;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/622/622669.png');
+  background-size: 20px;
+  background-position: 270px center;
+  background-repeat: no-repeat;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  outline: none;
+}
+
+#search-input:focus {
+  border-color: #66afe9;
+  box-shadow: 0 0 5px rgba(102,175,233,0.6);
+}
+
+/* Risultati dropdown */
+#results {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 250px;
   overflow-y: auto;
-  width: 25%; /* stessa larghezza del campo ricerca */
-  margin-left: 20px;
+  width: 300px;
+  margin-top: 4px;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
   font-family: Arial, sans-serif;
 }
 
@@ -28,14 +51,14 @@
 }
 
 #results li {
-  padding: 4px 8px;       /* meno spazio interno */
-  font-size: 12px;        /* testo più piccolo */
-  line-height: 1.2;       /* altezza riga più compatta */
+  padding: 10px 16px;
+  font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 #results li:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
 }
 </style>
 </head>
@@ -104,6 +127,11 @@
 
 
 <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<script>
+  const contextPath = "<%= request.getContextPath() %>";
+</script>
+
 
 <script>
 function googleTranslateElementInit() {
@@ -218,7 +246,10 @@ function googleTranslateElementInit() {
         html += 
           '<p><strong>Lingua:</strong> ' + data.lingua + '</p>' +
           '<p><strong>IVA:</strong> ' + data.iva + '%</p>' +
-          '<p><strong>Prezzo:</strong> €' + data.prezzo.toFixed(2) + '</p>';
+          '<p><strong>Prezzo:</strong> €' + data.prezzo.toFixed(2) + '</p>' +
+		  '<a href="product?action=add&id=' + data.IdProdotto + '">' +
+	 	  '<img src="' + contextPath + '/images/chart.jpg" alt="chart" style="width:60px; height:auto; display: block; margin: 0 auto;">' +
+		  '</a>';
 
 
         popupContent.innerHTML = html;

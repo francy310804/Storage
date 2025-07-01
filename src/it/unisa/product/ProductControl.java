@@ -69,6 +69,7 @@ public class ProductControl extends HttpServlet {
 
 					    PrintWriter out = response.getWriter();
 					    String json = "{"
+					    		+ "\"IdProdotto\":\"" + product.getIdProdotto() + "\","
 					            + "\"nome\":\"" + escapeJson(product.getNome()) + "\","
 					            + "\"categoria\":\"" + escapeJson(product.getCategoria()) + "\","
 					            + "\"descrizione\":\"" + escapeJson(product.getDescrizione()) + "\","
@@ -86,7 +87,7 @@ public class ProductControl extends HttpServlet {
 					        
 					    }
  	
-				 	
+				 	//elimina un pordotto dal db
 				} else if (action.equalsIgnoreCase("delete")) {
 					
 					int id = Integer.parseInt(request.getParameter("id"));
@@ -131,6 +132,17 @@ public class ProductControl extends HttpServlet {
 					carrello.addCarrello(id);
 					sessione.setAttribute("carrello", carrello);
 					
+					//elimina un prodotto dal carrello
+				} else if(action.equalsIgnoreCase("remove")) {
+					int id = Integer.parseInt(request.getParameter("id"));
+					HttpSession sessione = request.getSession();
+					Carrello carrello = (Carrello) sessione.getAttribute("carrello");
+					
+					carrello.deleteCarrello(id);
+					sessione.setAttribute("carrello", carrello);
+				    RequestDispatcher dispatcher = request.getRequestDispatcher("/Carrello.jsp");
+				    dispatcher.forward(request, response);
+				    return;
 				}
 				else if(action.equalsIgnoreCase("cerca")) {
 					response.setContentType("application/json");
