@@ -3,6 +3,7 @@ package it.unisa.user;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import it.unisa.admin.AdminBean;
+import it.unisa.admin.AdminModel;
 
 
 /**
@@ -48,33 +52,43 @@ public class UserControl extends HttpServlet {
 					//solo se l'user esiste e la pass
 					if(u != null && u.getEmail() != null && BCrypt.checkpw(pwd, u.getPassword())){
 						
-						request.getSession().setAttribute("admin", false);
-			        	request.getSession().setAttribute("email", u.getEmail());
-			        	request.getSession().setAttribute("nome", u.getNome());
-			        	request.getSession().setAttribute("cognome", u.getCognome());
-			        	request.getSession().setAttribute("indirizzo", u.getIndirizzo());
-			        	request.getSession().setAttribute("città", u.getCitta());
-			        	request.getSession().setAttribute("provincia", u.getProvincia());
-			        	request.getSession().setAttribute("Cap", u.getCap());
-						
+
 			        	HttpSession session = request.getSession();
+						session.setAttribute("admin", false);
 			        	session.setAttribute("user", u);
 			        	
-			        	//se è admin lo riporta alla sua pagina
-						if(u.getRuolo().equals("admin")) {
-							request.getSession().setAttribute("admin", true);
-							//response.sendRedirect("protectedUser/Administrator.jsp");	
-						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");	
-						    
-
-						} else {
-							//se non è admin va alla pag. utente
-							//response.sendRedirect("protectedUser/PageUtente.jsp");
-						    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			
+			        	//response.sendRedirect("protectedUser/PageUtente.jsp");
+						response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			
 						}
-					}
 					else 
-						response.sendRedirect("FailLogin.jsp");
+						{
+						
+						AdminModel modelA = new AdminModel();
+						AdminBean a = modelA.doRetrieveByKey(email);
+						if(a != null && a.getEmail() != null && BCrypt.checkpw(pwd, a.getPassword())){
+						
+						HttpSession session = request.getSession();
+						session.setAttribute("admin", true);
+						session.setAttribute("admin", false);
+			        	session.setAttribute("email", u.getEmail());
+			        	session.setAttribute("nome", u.getNome());
+			        	session.setAttribute("cognome", u.getCognome());
+			        	session.setAttribute("indirizzo", u.getIndirizzo());
+			        	session.setAttribute("città", u.getCitta());
+			        	session.setAttribute("provincia", u.getProvincia());
+			        	session.setAttribute("Cap", u.getCap());
+						
+			        	session.setAttribute("user", a);
+
+			        	response.sendRedirect("protectedUser/Administrator.jsp");
+						}
+					else {
+						request.setAttribute("popupMessage", "Email/password errata!");
+					    RequestDispatcher dispatcher = request.getRequestDispatcher("/Login.jsp");
+					    dispatcher.forward(request, response);
+					}
+						
+					}
 				}
 				else if(action.equalsIgnoreCase("registration")) {
 					String email = request.getParameter("email");
@@ -103,8 +117,7 @@ public class UserControl extends HttpServlet {
 			    if (session != null) {
 			        session.invalidate(); // distrugge la sessione
 			    }
-			    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			}
-				
+			    response.sendRedirect(request.getContextPath() + "/ProductView.jsp");			}	
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
