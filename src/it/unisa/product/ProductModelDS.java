@@ -183,4 +183,65 @@ public class ProductModelDS implements ProductModel {
 		}
 		return products;
 	}
+	
+	public synchronized String doRetrieveByName(String name) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+		String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME+ " WHERE nome LIKE ? ";
+		
+		StringBuilder json = new StringBuilder();
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSql);
+			preparedStatement.setString(1, "%"+name+"%");
+			
+			ResultSet rs = preparedStatement.executeQuery();
+				
+			json.append("[");
+
+			boolean first = true;
+			while(rs.next()) {
+			    if (!first) {
+			        json.append(",");
+			    } else {
+			        first = false;
+			    }
+			    json.append("{"
+			        + "\"idProdotto\":" + rs.getInt("idProdotto") + ","
+			        + "\"nome\":\"" + escapeJson(rs.getString("nome")) + "\","
+			        + "\"categoria\":\"" + escapeJson(rs.getString("categoria")) + "\","
+			        + "\"descrizione\":\"" + escapeJson(rs.getString("descrizione")) + "\","
+			        + "\"stato\":" + rs.getBoolean("stato") + ","
+			        + "\"lingua\":\"" + escapeJson(rs.getString("lingua")) + "\","
+			        + "\"iva\":" + rs.getInt("iva") + ","
+			        + "\"prezzo\":" + rs.getFloat("prezzo") + ","
+			        + "\"stock\":" + rs.getInt("stock") + ","
+			        + "\"linkAccesso\":\"" + escapeJson(rs.getString("linkAccesso")) + "\","
+			        + "\"linkImg\":\"" + escapeJson(rs.getString("linkImg")) + "\""
+			        + "}");
+			}
+			json.append("]");
+			
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}System.out.println("doRetrieveByName result: " + json.toString());
+	    return json.toString();
+	}
+	
+	public String escapeJson(String s) {
+    if (s == null) return "";
+    return s.replace("\\", "\\\\")
+            .replace("\"", "\\\"")
+            .replace("\n", "\\n")
+            .replace("\r", "\\r")
+            .replace("\t", "\\t");
+}
+	
 }

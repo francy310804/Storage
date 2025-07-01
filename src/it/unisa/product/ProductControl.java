@@ -131,7 +131,23 @@ public class ProductControl extends HttpServlet {
 					carrello.addCarrello(id);
 					sessione.setAttribute("carrello", carrello);
 					
-				} 
+				}
+				else if(action.equalsIgnoreCase("cerca")) {
+					response.setContentType("application/json");
+				    response.setCharacterEncoding("UTF-8");
+				    String cerca = request.getParameter("q");
+				    try {
+				        String json = model.doRetrieveByName(cerca);
+				        PrintWriter out = response.getWriter();
+				        out.write(json);
+				        out.flush();
+				        out.close();
+				    } catch (SQLException e) {
+				        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				        e.printStackTrace();
+				    }
+				    return;
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
