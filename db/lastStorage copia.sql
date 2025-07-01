@@ -1,3 +1,5 @@
+create database progettotsw;
+use progettotsw;
 CREATE TABLE `Prodotto` (
   `idProdotto` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
@@ -17,7 +19,7 @@ CREATE TABLE `Prodotto` (
   `email` varchar(50) NOT NULL,
   `nome` varchar(15) NOT NULL,
   `cognome` varchar(15) NOT NULL,
-  `indirizzo` varchar(20) NOT NULL,
+  `indirizzo` varchar(50) NOT NULL,
   `citta` varchar(10) NOT NULL,
   `provincia` char(2) NOT NULL,
   `cap` int NOT NULL,
@@ -42,8 +44,9 @@ CREATE TABLE Order_Details(
   image_url VARCHAR(255) NOT NULL, -- campo ridondante ma giustificato
   quantity INT NOT NULL,
   price DECIMAL(10,2) NOT NULL,
+  iva int(2) not null,
   FOREIGN KEY (order_id) REFERENCES orders(id),
-  FOREIGN KEY (product_id) REFERENCES products(idProdotto)
+  FOREIGN KEY (product_id) REFERENCES prodotto(idProdotto)
 );
 
 CREATE TABLE reviews (
@@ -57,7 +60,15 @@ CREATE TABLE reviews (
     FOREIGN KEY (user_id) REFERENCES Utenti(id)
 );
 
-  INSERT INTO Prodotto (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso, linkImg) VALUES
+ 
+CREATE TABLE Amministratore (
+idAdmin int(2) primary key AUTO_INCREMENT,
+email varchar(50) not null,
+nome varchar(15) not null,
+cognome varchar(15) not null,
+password varchar(100) not null
+);
+ INSERT INTO Prodotto (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso, linkImg) VALUES
 -- Corsi di lingua
 ('Corso Base Cinese', 'corso', 'Corso online per principianti di lingua cinese.', TRUE, 'cinese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=HO2BB-w_6jg', '/Users/francescapialatino/Desktop/Storage/WebContent/images/cinesebase.png'),
 ('Corso Base Giapponese', 'corso', 'Corso online per principianti di lingua giapponese.', TRUE, 'giapponese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=OV0zSQYHnY0', '/Users/francescapialatino/Desktop/Storage/WebContent/images/giapponesebase.jpg'),
