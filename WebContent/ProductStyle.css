@@ -251,3 +251,23 @@ nav h2 {
     color: #ccc; /* grigio chiaro per stelle vuote */
 }
 
+
+
+.favorite-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    font-size: 24px;
+    line-height: 1;
+    color: gray; /* colore di default */
+}
+
+.favorite-button .filled-heart {
+    color: red;
+}
+
+.favorite-button .empty-heart {
+    color: gray;
+}

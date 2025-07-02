@@ -71,7 +71,9 @@
   <% 
     if (session.getAttribute("user") != null) {
     	%>
-	<a href="<%= request.getContextPath() %>/OrderControl?action=viewFatture">I miei ordini</a>   
+	<a href="<%= request.getContextPath() %>/OrderControl?action=viewFatture">I miei ordini</a>  
+	<a href="<%= request.getContextPath() %>/Favorite.jsp">Wishlist</a>
+	 
     <%
       Boolean isAdmin = (Boolean) session.getAttribute("admin");
       if (isAdmin != null && isAdmin) { 

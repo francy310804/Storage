@@ -60,6 +60,13 @@ CREATE TABLE reviews (
     FOREIGN KEY (user_id) REFERENCES Utenti(id)
 );
 
+CREATE TABLE user_favorites (
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    PRIMARY KEY (user_id, product_id),
+    FOREIGN KEY (user_id) REFERENCES Utenti(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Prodotto(idProdotto) ON DELETE CASCADE
+);
  
 CREATE TABLE Amministratore (
 idAdmin int(2) primary key AUTO_INCREMENT,
@@ -70,13 +77,13 @@ password varchar(100) not null
 );
  INSERT INTO Prodotto (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso, linkImg) VALUES
 -- Corsi di lingua
-('Corso Base Cinese', 'corso', 'Corso online per principianti di lingua cinese.', TRUE, 'cinese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=HO2BB-w_6jg', '/Users/francescapialatino/Desktop/Storage/WebContent/images/cinesebase.png'),
-('Corso Base Giapponese', 'corso', 'Corso online per principianti di lingua giapponese.', TRUE, 'giapponese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=OV0zSQYHnY0', '/Users/francescapialatino/Desktop/Storage/WebContent/images/giapponesebase.jpg'),
-('Corso Base Coreano', 'corso', 'Corso online per principianti di lingua coreana.', TRUE, 'coreano', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=J6hzMJx8qL8', '/Users/francescapialatino/Desktop/Storage/WebContent/images/coreanobase.png'),
+('Corso Base Cinese', 'corso', 'Corso online per principianti di lingua cinese.', TRUE, 'cinese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=HO2BB-w_6jg', 'images/cinesebase.png'),
+('Corso Base Giapponese', 'corso', 'Corso online per principianti di lingua giapponese.', TRUE, 'giapponese', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=OV0zSQYHnY0', 'images/giapponesebase.jpg'),
+('Corso Base Coreano', 'corso', 'Corso online per principianti di lingua coreana.', TRUE, 'coreano', 22, 129.99, NULL, 'https://www.youtube.com/watch?v=J6hzMJx8qL8', 'images/coreanobase.png'),
 
 -- Manuali e materiali didattici
 ('Manuale Cinese HSK1', 'oggetto', 'Manuale cartaceo per la preparazione al test HSK1.', TRUE, 'cinese', 10, 24.50, 50, NULL, 'images/manualecinese.jpg'),
-('Manuale Giapponese JLPT N5', 'oggetto', 'Libro per la preparazione al JLPT N5.', TRUE, 'giapponese', 10, 27.90, 40, NULL, 'mages/manualegiapponese.jpg'),
+('Manuale Giapponese JLPT N5', 'oggetto', 'Libro per la preparazione al JLPT N5.', TRUE, 'giapponese', 10, 27.90, 40, NULL, 'images/manualegiapponese.jpg'),
 ('Manuale Coreano TOPIK I', 'oggetto', 'Libro per la preparazione al TOPIK I.', TRUE, 'coreano', 10, 26.00, 45, NULL, 'images/manualecoreano.jpg'),
 
 -- Flashcard

@@ -63,7 +63,7 @@
     Totale carrello: <strong><%= String.format("%.2f", carrello.getTotale()) %> €</strong>
 </p>
 
-<form action="OrderControl" method="post">
+<form action="${pageContext.request.contextPath}/order" method="post">
     <input type="hidden" name="action" value="checkout">
     <button type="submit" style="width:60px; height:40px;">Acquista</button>
 </form>

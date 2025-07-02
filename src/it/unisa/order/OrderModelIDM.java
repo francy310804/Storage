@@ -55,7 +55,7 @@ public class OrderModelIDM implements OrderModel {
 	            throw new SQLException("Errore nella generazione dell'ID ordine.");
 	        }
 
-	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price,iva) VALUES (?, ?, ?, ?, ?,?)";
+	        String sqlDettagli = "INSERT INTO Order_Details (order_id, product_id, image_url, quantity, price, iva) VALUES (?, ?, ?, ?, ?,?)";
 	        psDettagli = connection.prepareStatement(sqlDettagli);
 
 	        for (ItemOrder item : l) {
