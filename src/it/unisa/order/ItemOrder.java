@@ -8,6 +8,7 @@ che è formata dal productBean + la relativa quantità*/
 public class ItemOrder {
 	private ProductBean item;
 	private int numItems;
+	private int iva;
 	
 	public ItemOrder() {
 		
@@ -16,6 +17,7 @@ public class ItemOrder {
 	public ItemOrder(ProductBean item) {
 	    setItem(item);
 	    setNumItems(1);
+	    setIva(item.getIva());
 	}
 	
 	public int getItemID() {
@@ -62,7 +64,11 @@ public class ItemOrder {
 		return(getNumItems() * getUnitCost());
 	}
 	
+	public void setIva(int iva) {
+		this.iva = iva;
+	}
+	
 	public int getIva(){
-		return(getItem().getIva());
+		return(this.iva);
 	}
 }

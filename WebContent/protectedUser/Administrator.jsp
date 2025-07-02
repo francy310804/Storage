@@ -27,6 +27,64 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello"
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="stylesheet" type="text/css" href="ProductStyle.css">
 	<title>Catalogo</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<style>
+    .content-div {
+		display: none;
+		padding: 20px;
+		margin-top: 10px;
+		background-color: #d3eaff;
+		border: 1px solid #007acc;
+		border-radius: 8px;
+		
+    }
+    .button-group{
+  		margin-left: 10px;
+  		width: 100%;
+    }
+
+    .button-group button {
+		margin: 10px 10px 10px 10px;
+		padding: 10px 20px;
+		cursor: pointer;
+		border-radius: 5px;
+    }
+	#details-container{
+		display: none; 
+	    position: fixed; 
+	    top: 0; left: 0; 
+	    width: 100%; height: 100%; 
+	    background-color: rgba(0,0,0,0.5); 
+	    justify-content: center; 
+	    align-items: center; 
+	    z-index: 1000;
+    }
+    .element-container{
+    	position: relative;
+   	 	width: 100%; height: 100%;
+    }
+    .element-container form{ 
+	    width: 100%; height: 100%; 
+    }
+    
+     .element-container h2{
+   	 	}
+    #details-background{
+      background: white; 
+      padding: 20px; 
+      border-radius: 8px; 
+      width: 300px; 
+      max-width: 90%; 
+      position: relative;
+    }
+    #close-popup{
+        position: absolute; 
+        top: 5px; 
+        right: 5px; 
+        font-weight: bold; 
+        cursor: pointer;
+        }
+    </style>
 </head>
 
 
@@ -34,25 +92,28 @@ import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello"
 
 <h1>BENVENUTO AMMINISTRATORE <%= session.getAttribute("nome") %> </h1>
 
-<div>
+<p>
 in questa pagina puoi visualizzare il materiale del sito, apportare delle modifiche e fare inserimenti
-</div>
+</p>
 
 <a href="<%= request.getContextPath() %>/UserControl?action=logout">
   <img src="<%= request.getContextPath() %>/images/logout.png" alt="Logout" style="width:40px; height:auto;">
 </a>
 <br>
 <br>
-
-<h2>Corsi</h2>
-<div class="element-container">
-  <%
+<div class="button-group">
+	<button data-target="ProdottiCorsi">Corsi</button>
+	<button data-target="ProdottiMateriali">Materiali</button>
+	<button data-target="insert">Inserimento</button>
+</div>
+<div id="ProdottiCorsi" class="element-container">
+ <%
     if (products != null && !products.isEmpty()) {
       Iterator<?> it = products.iterator();
       while (it.hasNext()) {
         ProductBean bean = (ProductBean) it.next();
         if (bean.getCategoria() != null && bean.getCategoria().toLowerCase().contains("corso")) {
-  %>
+ %>
     
 <div class="element-card">
 <img class="element-image" src="<%= request.getContextPath() %>/<%= bean.getLinkImg() %>" alt="Immagine corso">
@@ -73,36 +134,15 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 
 
 <!--contenitore dettagli prodotti-->
-<div id="details-container" style="
-    display: none; 
-    position: fixed; 
-    top: 0; left: 0; 
-    width: 100%; height: 100%; 
-    background-color: rgba(0,0,0,0.5); 
-    justify-content: center; 
-    align-items: center; 
-    z-index: 1000;">
-  <div style="
-      background: white; 
-      padding: 20px; 
-      border-radius: 8px; 
-      width: 300px; 
-      max-width: 90%; 
-      position: relative;">
-    <button id="close-popup" style="
-        position: absolute; 
-        top: 5px; 
-        right: 5px; 
-        font-weight: bold; 
-        cursor: pointer;">X</button>
+<div id="details-container">
+  <div id="details-background">
+    <button id="close-popup">X</button>
     <div id="popup-content"></div>
   </div>
 </div>
 
 	<br><br><br>
-	<h2>Materiali di supporto</h2>
-	
-	<div class="element-container">
+	<div id="ProdottiMateriali" class="element-container">
   <%
     if (products != null && !products.isEmpty()) {
       Iterator<?> it = products.iterator();
@@ -127,14 +167,9 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
   %>
 </div>
 
-    <form action="UploadServlet" method="post" >
-        Nome Immagine: <input type="text" name="nome"><br>
-        
-        <input type="submit" value="Carica">
 
-<div>
-    <h2>Insert</h2>
-	<form action="product?action=insert" method="post" enctype="multipart/form-data">
+<div id="insert" class="element-container">
+	<form action="product" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="action" value="insert"> 
 		
 		<label for="nome">Nome:</label><br> 
@@ -165,9 +200,9 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 		<label for="LinkAccesso">Link Accesso:</label><br> 
 		<textarea name="linkaccesso" maxlength="100" rows="3" required placeholder="inserisci link accesso"></textarea><br>
 
-		<label for="InsertImg">Seleziona immagine: </label><br>
+		<label for="linkImg">Link immagine: </label><br>
 		
-        <input id="IsertImg" type="file" name="file" accept="image/*" ><br>
+        <textarea name="linkImg" maxlength="200" rows="3" required placeholder="inserisci link immagine"></textarea><br>
 		
 		<input type="submit" value="Add"><input type="reset" value="Reset">
 
@@ -263,6 +298,22 @@ document.getElementById('close-popup').addEventListener('click', () => {
 	  document.getElementById('details-container').style.display = 'none';
 	});
 	
+</script>
+
+<script>
+	$(document).ready(function(){
+	    $(".element-container").hide();
+	    // Mostra solo il contenitore desiderato all'avvio
+	    $("#ProdottiCorsi").show();
+		$(".button-group button").click(function(){
+			const targetId= $(this).data("target");
+			//Nasconde tutti i div aperti
+			$(".element-container").slideUp(300);
+			//Mostra solo il div selezionato
+			$("#"+targetId).delay(300).slideDown(300);
+			
+		});
+	});
 </script>
 
 </body>

@@ -113,4 +113,5 @@ public class ProductBean {
 	public void setlinkImg(String linkImg) {
 		this.linkImg = linkImg;
 	}
+	
 }

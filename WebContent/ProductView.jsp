@@ -124,56 +124,93 @@
 </div>
 
 <script>
-    const contextPath = "<%= request.getContextPath() %>";
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.details-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.dataset.id;
-                if (!id) {
-                    console.error("ID prodotto non valido.");
-                    return;
-                }
+document.addEventListener('DOMContentLoaded', () => {
+	  console.log("DOM ready");
+	
 
-                fetch(`product?action=read&id=${id}`, {
-                    headers: { "X-Requested-With": "XMLHttpRequest" }
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    return response.json();
-                })
-                .then(data => {
-                    const container = document.getElementById('details-container');
-                    const popupContent = document.getElementById('popup-content');
+  // trova i bottoni details
+  document.querySelectorAll('.details-btn').forEach(button => {
 
-                    container.style.display = 'flex';
+    // per ogni bottone aggiunge il listener
+    button.addEventListener('click', () => {
 
-                    let html = `<h3>Dettagli prodotto</h3>
-                                <p><strong>Nome:</strong> ${data.nome}</p>
-                                <p><strong>Categoria:</strong> ${data.categoria}</p>
-                                <p><strong>Descrizione:</strong> ${data.descrizione}</p>`;
 
-                    if (!data.categoria.toLowerCase().includes("corso")) {
-                        html += `<p><strong>Stato:</strong> ${data.stato ? 'Disponibile' : 'Non disponibile'}</p>
-                                 <p><strong>Stock:</strong> ${data.stock}</p>`;
-                    }
+      // prende l'id del prodotto dal bottone
+      const id = button.dataset.id;
+      
+      
+      // Verifica che l'ID non sia nullo o vuoto
+      if (!id) {
+        console.error("ID prodotto non valido.");
+        return;
+      }
 
-                    html += `<p><strong>Lingua:</strong> ${data.lingua}</p>
-                             <p><strong>IVA:</strong> ${data.iva}%</p>
-                             <p><strong>Prezzo:</strong> €${data.prezzo}</p>
-                             <a href="product?action=add&id=${data.IdProdotto}">
-                                <img src="${contextPath}/images/chart.jpg" alt="chart" style="width:60px; height:auto; display:block; margin: 0 auto;">
-                             </a>`;
+      const url = "product?action=read&id="+id;
+      
 
-                    popupContent.innerHTML = html;
-                })
-                .catch(error => console.error("Errore nella richiesta AJAX:", error));
-            });
-        });
+      fetch(url, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest" // per distinguere richiesta AJAX
+        }
+      })
 
-        document.getElementById('close-popup').addEventListener('click', () => {
-            document.getElementById('details-container').style.display = 'none';
-        });
+      // converte la risposta in JSON
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+
+      .then(data => {
+
+        // trova il div dove mostrare i dettagli
+        const container = document.getElementById('details-container');
+        const popupContent = document.getElementById('popup-content');
+
+        // mostra il div
+        container.style.display = 'flex';
+
+        // costruiamo l'html con i dettagli base
+        let html = 
+          '<h3>Dettagli prodotto</h3>' +
+          '<p><strong>Nome:</strong> ' + data.nome + '</p>' +
+          '<p><strong>Categoria:</strong> ' + data.categoria + '</p>' +
+          '<p><strong>Descrizione:</strong> ' + data.descrizione + '</p>';
+
+        // se non è un corso ma un oggetto vengono mostrati lo stato e il num. in stock
+        if (!data.categoria.toLowerCase().includes("corso")) {
+          html += 
+            '<p><strong>Stato:</strong> ' + (data.stato ? 'Disponibile' : 'Non disponibile') + '</p>' +
+            '<p><strong>Stock:</strong> ' + data.stock + '</p>';
+        }
+
+        // aggiungiamo lingua, IVA e prezzo
+        html += 
+          '<p><strong>Lingua:</strong> ' + data.lingua + '</p>' +
+          '<p><strong>IVA:</strong> ' + data.iva + '%</p>' +
+          '<p><strong>Prezzo:</strong> €' + data.prezzo + '</p>';
+
+        // inserisce l'html nel div
+        popupContent.innerHTML = html;
+      })
+
+      .catch(error => {
+        console.error("Errore nella richiesta AJAX:", error);
+      });
     });
+
+  });
+});
+</script>
+
+
+<script>
+
+document.getElementById('close-popup').addEventListener('click', () => {
+	  document.getElementById('details-container').style.display = 'none';
+	});
+	
 </script>
 
 </body>

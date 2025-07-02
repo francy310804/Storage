@@ -104,7 +104,7 @@ public class OrderModelIDM implements OrderModel {
 	            FatturaBean bean = new FatturaBean();
 	            bean.setIdFattura(rs.getInt("id"));
 	            bean.setIdUtente(rs.getInt("utente"));
-	            bean.setDataOrdine(rs.getTimestamp("order_date")); // usa getDate se hai solo la data
+	            bean.setDataOrdine(rs.getTimestamp("order_date"));
 	            bean.setPrezzoTotale(rs.getFloat("total_price"));
 	            fatture.add(bean);
 	        }
@@ -133,7 +133,7 @@ public class OrderModelIDM implements OrderModel {
 
 	    List<ItemOrder> items = new ArrayList<>();
 
-	    String sql = "SELECT od.product_id, od.image_url, od.quantity, od.price, "
+	    String sql = "SELECT od.product_id, od.image_url, od.quantity, od.price, od.iva, "
 	               + "p.nome, p.linkImg "
 	               + "FROM order_details od "
 	               + "JOIN prodotto p ON od.product_id = p.idProdotto "
@@ -154,6 +154,7 @@ public class OrderModelIDM implements OrderModel {
 	            p.setlinkImg(rs.getString("linkImg")); // prendi l'immagine dal prodotto
 	            p.setPrezzo((float) rs.getDouble("price"));
 	            item.setNumItems(rs.getInt("quantity"));
+	            item.setIva(rs.getInt("iva"));
 	            item.setItem(p);
 
 	            items.add(item);

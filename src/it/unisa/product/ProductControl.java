@@ -40,7 +40,7 @@ public class ProductControl extends HttpServlet {
 				
 				//implemento JSON
 				if (action.equalsIgnoreCase("read")) {
-										
+					
 					String idParam = request.getParameter("id");
 				
 					if (idParam == null || idParam.isEmpty()) {
