@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
+import it.unisa.product.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,6 +28,7 @@ import javax.mail.internet.MimeMessage;
 public class OrderControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static OrderModel model = new OrderModelIDM();
+	static ProductModel model2 = new ProductModelDS();
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -207,8 +209,8 @@ public class OrderControl extends HttpServlet {
 					r.setUserId(usr.getId());
 					r.setReviewDate(new Timestamp(System.currentTimeMillis()));					
 					model.doSaveReview(r);
-			        response.sendRedirect("ProductView.jsp");
-			        return;
+					response.sendRedirect("reviewSuccess.jsp");
+					return;
 				}
 			
 			}
@@ -221,6 +223,8 @@ public class OrderControl extends HttpServlet {
 
 			int id = Integer.parseInt(request.getParameter("productId"));
 			request.setAttribute("reviews", model.getReviewsByProductId(id));
+			request.setAttribute("object", model2.doRetrieveByKey(id));
+
 		} catch(Exception e) {
 			System.out.println("Error:" + e.getMessage());
 		}

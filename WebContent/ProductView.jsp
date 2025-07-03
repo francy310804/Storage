@@ -57,9 +57,9 @@
         <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
 
         <div class="element-actions">
-            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Details</button>
-            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Review</a>
-            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">AddCarrello</a>
+            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
+            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Recensioni</a>
+            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi al carrello</a>
         </div>
     </div>
 <%
@@ -101,9 +101,9 @@
         <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
 
         <div class="element-actions">
-            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Details</button>
-            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Review</a>
-            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">AddCarrello</a>
+            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
+            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Recensioni</a>
+            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi al carrello</a>
         </div>
     </div>
 <%

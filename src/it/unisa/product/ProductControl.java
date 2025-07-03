@@ -140,6 +140,11 @@ public class ProductControl extends HttpServlet {
 					carrello.addCarrello(id);
 					sessione.setAttribute("carrello", carrello);
 					
+				    // Redirect dopo aver aggiunto al carrello
+				    response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				    return;  
+					
+					
 					//elimina un prodotto dal carrello
 				} else if(action.equalsIgnoreCase("remove")) {
 					int id = Integer.parseInt(request.getParameter("id"));

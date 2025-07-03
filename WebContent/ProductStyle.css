@@ -26,14 +26,6 @@ a:visited {
     text-decoration: none;
 }
 
-a:hover {
-    color: #dc3545;
-    text-decoration: underline;
-}
-
-a:active {
-    color: #0056b3;
-}
 
 table {
     width: 100%;
@@ -85,7 +77,16 @@ form textarea {
     border-radius: 4px;
 }
 
-form input[type=submit],
+
+form input[type="submit"] {
+  	padding: 6px 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background-color:#007bff;
+  }
+
 form input[type=reset] {
     padding: 10px 20px;
     margin-top: 15px;

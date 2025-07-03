@@ -9,9 +9,12 @@
 </head>
 <body>
 
+<jsp:include page="NavBar.jsp"/>
+
+
 <div>
-<form action="UserControl?action=login" method="post" onsubmit="return validationEmail()">
-  <h1>Login page</h1>
+<form id = "login" action="UserControl?action=login" method="post" onsubmit="return validationEmail()">
+  <h1>Login</h1>
   <span class = "c1">email: <input type="text" id="email" name="email" placeholder="insert your email.." onfocus="myFunction(this)"></span><br><br>
   <span class = "c1">password: <input type="password" name="password" placeholder="insert your password.." onfocus="myFunction(this)"></span><br><br> 
   <input type="submit" value="Accedi">

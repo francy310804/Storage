@@ -1,16 +1,5 @@
 @charset "UTF-8";
 
-html {
-	width: 500px;
-	margin: 30px auto;
-}
-
-body {
-	background-color: #ADD8E6;
-	color: #000080;
-	
-}
-
 .c1 {
 	font-weight: bold;
 }
@@ -20,38 +9,42 @@ h1 {
 	font-size: 50px;
 }
 
-form {
-  width: 400px;
-  margin: 50px auto;
-  padding: 30px;
-  background-color: #F8F9FA;
-  border: 2px solid #4682B4; 
-  border-radius: 15px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  text-align: center;
+  #login {
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #F8F9FA;
+    border: 2px solid #4682B4; 
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+#login input[type="text"],
+#login input[type="password"],
+#login input[type="number"]{
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
-input[type="submit"] {
-  padding: 6px 12px;
-  font-size: 18px;
-  border-radius: 8px;
-}
 
-input[type="submit"]:hover {
-  background-color: #7596ea;
-}
+ input[type="submit"] {
+  	padding: 6px 12px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background-color:#007bff;
+  }
 
-a:visited {
-	color: red;
-}
-a:hover {
-  color: #2840af;
-  text-decoration: underline;
-}
-
-  form input,
-  form textarea,
-  form select {
-  	border-radius: 5px;
+  #login form input,
+  #login form textarea,
+  #login form select {
+    border-radius: 5px;
   }
