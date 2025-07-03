@@ -98,13 +98,19 @@ public class ProductControl extends HttpServlet {
 					String name = request.getParameter("nome");
 					String categoria = request.getParameter("categoria");
 					String description = request.getParameter("descrizione");
-					boolean stato;
-					if(request.getParameter("disponibilita").equalsIgnoreCase("false"))
-						stato = false;
-					else
-						stato = true;
+				    String disponibilita = request.getParameter("disponibilita");
+				    boolean stato = disponibilita != null && disponibilita.equalsIgnoreCase("true");
+
 					String lingua = request.getParameter("lingua");
-					int iva = Integer.parseInt(request.getParameter("IVA"));
+					String ivaParam = request.getParameter("IVA");
+					int iva = 0;
+					if (ivaParam != null && !ivaParam.isEmpty()) {
+					    iva = Integer.parseInt(ivaParam);
+					} else {
+					    // valore di default, oppure errore custom
+					    iva = 0;
+					}
+					
 					float price = Float.parseFloat(request.getParameter("prezzo"));
 					int quantity = Integer.parseInt(request.getParameter("stock"));
 					String link = request.getParameter("linkaccesso");
@@ -121,6 +127,8 @@ public class ProductControl extends HttpServlet {
 					bean.setLinkAccesso(link);
 					bean.setlinkImg(linkImg);
 					model.doSave(bean);
+					response.sendRedirect("/protectedUser/Administrator.jsp");
+					return;
 					
 				} else if(action.equalsIgnoreCase("add")) {
 					int id = Integer.parseInt(request.getParameter("id"));

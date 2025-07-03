@@ -105,6 +105,7 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 	<button data-target="ProdottiCorsi">Corsi</button>
 	<button data-target="ProdottiMateriali">Materiali</button>
 	<button data-target="insert">Inserimento</button>
+	<button data-target="Utenti">Visualizza utenti</button>
 </div>
 <div id="ProdottiCorsi" class="element-container">
  <%
@@ -169,8 +170,7 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 
 
 <div id="insert" class="element-container">
-	<form action="product" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="action" value="insert"> 
+	<form action="<%=request.getContextPath()%>/product?action=insert" method="post">
 		
 		<label for="nome">Nome:</label><br> 
 		<input name="nome" type="text" maxlength="20" required placeholder="inserisci nome"><br> 
@@ -189,7 +189,7 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 		<textarea name="lingua" maxlength="100" rows="3" required placeholder="inserisci lingua"></textarea><br>
 
 		<label for="IVA">IVA:</label><br> 
-		<input name="IVA" type="number" maxlength="20" required placeholder="inserisci l'IVA"><br> 
+		<input name="IVA" type="number" max="100" required placeholder="inserisci l'IVA"><br> 
 
 		<label for="Prezzo">Prezzo:</label><br>
 		<input name="prezzo" type="number" min="0" value="0" required><br>
@@ -208,6 +208,14 @@ in questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 
 	</form>
 	
+</div>
+
+
+<div class = "element-container" id = "Utenti">
+
+
+
+
 </div>
 
 <script>

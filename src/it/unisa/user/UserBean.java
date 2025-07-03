@@ -18,6 +18,21 @@ public class UserBean {
 		
 	}
 	
+	public UserBean(String nome, String cognome, String email, String citta, String provincia, String password,
+			String indirizzo, int cap) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.citta = citta;
+		this.provincia = provincia;
+		if(password != null) //Se la pass non è nulla la setta
+			this.password = password;
+		
+		this.indirizzo = indirizzo;
+		this.cap = cap;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
