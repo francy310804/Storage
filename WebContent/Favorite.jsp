@@ -45,8 +45,14 @@
                 <input type="hidden" name="id" value="<%= bean.getIdProdotto() %>">
 				<button type="submit" style="background:none; border:none; padding:0; margin:0; line-height:0; font-size:0; width:30px; height:30px; cursor:pointer;">
     			<img src="<%= request.getContextPath() %>/images/trash.png" alt="Rimuovi" style="width:30px; height:30px; display:block;">
-				</button>          
-        	</form>            
+				</button>   
+				
+				<a href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">
+				<img src = "<%= request.getContextPath() %>/images/lente.png" alt="Visualizza" style="width:40px; height:40px; margin-left:30px;">
+				</a>     
+		</form>        
+   	
+		    
         </div>
     <%
         }

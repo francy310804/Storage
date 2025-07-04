@@ -75,6 +75,7 @@ table.product-table th {
 </table>
 
 <div style="width: 80%; margin: 20px auto;">
+<h2>Scrivi anche tu una recensione</h2>
     <% if (session.getAttribute("user") == null) { %>
         <h3>Se vuoi scrivere una recensione autenticati prima</h3>
     <% } else { %>

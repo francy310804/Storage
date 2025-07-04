@@ -156,6 +156,18 @@ public class ProductControl extends HttpServlet {
 				    RequestDispatcher dispatcher = request.getRequestDispatcher("/Carrello.jsp");
 				    dispatcher.forward(request, response);
 				    return;
+				} else if(action.equalsIgnoreCase("updateQuantity")) {
+				    int id = Integer.parseInt(request.getParameter("id"));
+				    int quantity = Integer.parseInt(request.getParameter("quantity"));
+				    HttpSession session = request.getSession();
+				    Carrello cart = (Carrello) session.getAttribute("carrello");
+
+				    if (cart != null) {
+				        cart.aggiornaQuantita(id, quantity); // metodo da implementare
+				    }
+
+				    response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				    return;
 				}
 				else if(action.equalsIgnoreCase("cerca")) {
 					response.setContentType("application/json");

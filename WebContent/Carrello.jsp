@@ -39,8 +39,17 @@
     <tr>
         <td><%= x.getNome() %></td>
         <td><%= String.format("%.2f", x.getUnitCost()) %> €</td>
-        <td><%= x.getNumItems() %></td>
-        <td>
+        
+	<td>
+    <form action="${pageContext.request.contextPath}/product" method="post" style="display: inline-block;">
+        <input type="hidden" name="action" value="updateQuantity">
+        <input type="hidden" name="id" value="<%= x.getItemID() %>">
+        <input type="number" name="quantity" value="<%= x.getNumItems() %>" min="1" style="width: 50px;">
+        <button type="submit">Aggiorna</button>
+    </form>
+    
+	</td>       
+	<td>
 		<form action="${pageContext.request.contextPath}/product" method="post">
                 <input type="hidden" name="action" value="remove">
                 <input type="hidden" name="id" value="<%= x.getItemID() %>">

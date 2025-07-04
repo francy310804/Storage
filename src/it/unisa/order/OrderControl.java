@@ -59,7 +59,7 @@ public class OrderControl extends HttpServlet {
 					    return;
 					}
 
-				    UserBean utente = (UserBean) session.getAttribute("user"); // o UserBean o come si chiama nel tuo progetto
+				    UserBean utente = (UserBean) session.getAttribute("user"); 
 				    if (utente == null) {
 				        response.sendRedirect("Login.jsp");
 				        return;

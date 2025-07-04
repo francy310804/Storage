@@ -23,6 +23,7 @@
         <th>Quantità</th>
         <th>Prezzo Unitario</th>
         <th>Totale</th>
+        <th>link accesso</th>
     </tr>
     <%
         for (ItemOrder item : items) {
@@ -34,6 +35,13 @@
         <td><%= item.getNumItems() %></td>
         <td>€ <%= String.format("%.2f", item.getUnitCost()) %></td>
         <td>€ <%= String.format("%.2f", totale) %></td>
+        <td><%
+        		String link = item.getlinkAccesso();
+        if(link == null) {%>
+			nessun link disponibile. Il tuo prodotto arriverà presto.
+        	<%} else { %>
+        	<%= link%>
+        	<%}%>
     </tr>
     <% } %>
 </table>

@@ -9,6 +9,7 @@ public class ItemOrder {
 	private ProductBean item;
 	private int numItems;
 	private int iva;
+	private String linkAccesso;
 	
 	public ItemOrder() {
 		
@@ -23,6 +24,20 @@ public class ItemOrder {
 	public int getItemID() {
 		return(getItem().getIdProdotto());
 	}
+	
+	public String getCategoria() {
+		return(getItem().getCategoria());	
+	}
+	
+	public void setlinkAccesso(String l) {
+		this.linkAccesso = l;
+		
+	}
+	
+	public String getlinkAccesso() {	
+		return this.linkAccesso;
+	}
+		
 	
 	public ProductBean getItem() {
 		return(item);

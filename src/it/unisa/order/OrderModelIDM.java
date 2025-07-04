@@ -132,12 +132,11 @@ public class OrderModelIDM implements OrderModel {
 	    ResultSet rs = null;
 
 	    List<ItemOrder> items = new ArrayList<>();
-
-	    String sql = "SELECT od.product_id, od.image_url, od.quantity, od.price, od.iva, "
-	               + "p.nome, p.linkImg "
-	               + "FROM order_details od "
-	               + "JOIN prodotto p ON od.product_id = p.idProdotto "
-	               + "WHERE od.order_id = ?";
+	    
+	    String sql = "SELECT od.*, p.nome, p.linkImg, p.linkAccesso " +
+	             "FROM Order_Details od " +
+	             "JOIN Prodotto p ON od.product_id = p.idProdotto " +
+	             "WHERE od.order_id = ?";
 
 	    try {
 	        con = ds.getConnection();
@@ -156,7 +155,7 @@ public class OrderModelIDM implements OrderModel {
 	            item.setNumItems(rs.getInt("quantity"));
 	            item.setIva(rs.getInt("iva"));
 	            item.setItem(p);
-
+	            item.setlinkAccesso(rs.getString("linkAccesso"));
 	            items.add(item);
 	        }
 

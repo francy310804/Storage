@@ -51,6 +51,14 @@ public class Carrello {
 	    }
 	}
 	
+	public void aggiornaQuantita(int id, int quantity) {
+		 for(ItemOrder beanC : itemsOrdered) {
+		        if(beanC.getItemID() == id) {
+		        	beanC.setNumItems(quantity);	
+		        }
+		 }
+	}
+	
 	public double getTotale() {
 		
 		double tot = 0;

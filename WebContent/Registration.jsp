@@ -9,11 +9,12 @@
 
 </head>
 <body>
+<jsp:include page="NavBar.jsp"/>
 
 <div>
 <form id = "login" action = "UserControl?action=registration" method = "post" onsubmit="return validationEmail()">
 <h1>Registration</h1>
-email: <input type = "text" name = "email" placeholder = "insert your email.." required><br><br> 
+email: <input type = "text" name = "email" id = "email" placeholder = "insert your email.." required><br><br> 
 nome: <input type = "text" name = "nome" placeholder = "insert your name.." required><br><br> 
 cognome: <input type = "text" name = "cognome" placeholder = "insert your surname.." required><br><br> 
 indirizzo: <input type = "text" name = "indirizzo" placeholder = "insert your address.." required><br><br> 
