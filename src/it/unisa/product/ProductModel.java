@@ -17,4 +17,9 @@ public interface ProductModel {
 	public Collection<ProductBean> doRetrieveAll(String order) throws SQLException;
 	
 	public String doRetrieveByName(String name) throws SQLException;
-}
+	
+	public void doUpdate(ProductBean product) throws SQLException;
+	
+	public Collection<ProductBean> doRetrieveAllForAdmin(String order) throws SQLException;
+	   
+	}

@@ -38,10 +38,9 @@ public class ProductModelDS implements ProductModel {
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
 		String insertSQL = "INSERT INTO " + ProductModelDS.TABLE_NAME
-				+ " (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso, linkImg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		
+			    + " (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso, linkImg, eliminato) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
@@ -55,6 +54,7 @@ public class ProductModelDS implements ProductModel {
 			preparedStatement.setInt(8, product.getStock());
 			preparedStatement.setString(9, product.getLinkAccesso());
 			preparedStatement.setString(10, product.getLinkImg());
+			preparedStatement.setBoolean(11, product.isEliminato());
 			
 			preparedStatement.executeUpdate();
 		} finally {
@@ -69,32 +69,32 @@ public class ProductModelDS implements ProductModel {
 		}
 
 	public synchronized boolean doDelete(int code) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-		int result = 0;
-		
-		String deleteSql = "DELETE FROM "  + ProductModelDS.TABLE_NAME + " WHERE idProdotto = ?";
-		
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(deleteSql);
-			preparedStatement.setInt(1, code);
-			
-			result = preparedStatement.executeUpdate();
-			
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		
-		return (result != 0);
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+
+	    int result = 0;
+	    String deleteSql = "UPDATE " + ProductModelDS.TABLE_NAME + " SET eliminato = true WHERE idProdotto = ?";
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(deleteSql);
+	        preparedStatement.setInt(1, code);
+
+	        result = preparedStatement.executeUpdate();
+
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+
+	    return (result != 0);
 	}
+
 	
 	public synchronized ProductBean doRetrieveByKey(int code) throws SQLException {
 		Connection connection = null;
@@ -123,6 +123,8 @@ public class ProductModelDS implements ProductModel {
 				bean.setStock(rs.getInt("stock"));
 				bean.setLinkAccesso(rs.getString("linkAccesso"));
 				bean.setlinkImg(rs.getString("linkImg"));
+				bean.setEliminato(rs.getBoolean("eliminato"));
+
 			}
 		} finally {
 			try {
@@ -136,59 +138,112 @@ public class ProductModelDS implements ProductModel {
 		return bean;
 	}
 	
+	public synchronized Collection<ProductBean> doRetrieveAllForAdmin(String order) throws SQLException {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    Collection<ProductBean> products = new LinkedList<ProductBean>();
+
+	    String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME; // Nessun filtro per eliminato
+	    
+	    if (order != null && !order.equals("")) {
+	        selectSql += " ORDER BY " + order;
+	    }
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(selectSql);
+	        ResultSet rs = preparedStatement.executeQuery();
+
+	        while (rs.next()) {
+	            ProductBean bean = new ProductBean();
+	            bean.setIdProdotto(rs.getInt("idProdotto"));
+	            bean.setNome(rs.getString("nome"));
+	            bean.setCategoria(rs.getString("categoria"));
+	            bean.setDescrizione(rs.getString("descrizione"));
+	            bean.setStato(rs.getBoolean("stato"));
+	            bean.setLingua(rs.getString("lingua"));
+	            bean.setIva(rs.getInt("iva"));
+	            bean.setPrezzo(rs.getFloat("prezzo"));
+	            bean.setStock(rs.getInt("stock"));
+	            bean.setLinkAccesso(rs.getString("linkAccesso"));
+	            bean.setlinkImg(rs.getString("linkImg"));
+	            bean.setEliminato(rs.getBoolean("eliminato"));
+
+
+	            products.add(bean);
+	        }
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+
+	    return products;
+	}
+
+	
 	
 	public synchronized Collection<ProductBean> doRetrieveAll(String order) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-		Collection<ProductBean> products = new LinkedList<ProductBean>();
-		
-		String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME;
-		
-		if (order != null && !order.equals("")) {
-			selectSql += " ORDER BY " + order;
-		}
-		
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(selectSql);
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
 
-			ResultSet rs = preparedStatement.executeQuery();
-			
-			while(rs.next()) {
-				ProductBean bean = new ProductBean();
-				
-				bean.setIdProdotto(rs.getInt("idProdotto"));
-				bean.setNome(rs.getString("nome"));
-				bean.setCategoria(rs.getString("categoria"));
-				bean.setDescrizione(rs.getString("descrizione"));
-				bean.setStato(rs.getBoolean("stato"));
-				bean.setLingua(rs.getString("lingua"));
-				bean.setIva(rs.getInt("iva"));
-				bean.setPrezzo(rs.getFloat("prezzo"));
-				bean.setStock(rs.getInt("stock"));
-				bean.setLinkAccesso(rs.getString("linkAccesso"));
-				bean.setlinkImg(rs.getString("linkImg"));
-				
-				products.add(bean);
-			}
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		return products;
+	    Collection<ProductBean> products = new LinkedList<ProductBean>();
+
+	    String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME 
+                + " WHERE eliminato = false AND stato = true";
+
+	    if (order != null && !order.equals("")) {
+	        selectSql += " ORDER BY " + order;
+	    }
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(selectSql);
+
+	        ResultSet rs = preparedStatement.executeQuery();
+
+	        while (rs.next()) {
+	            ProductBean bean = new ProductBean();
+	            bean.setIdProdotto(rs.getInt("idProdotto"));
+	            bean.setNome(rs.getString("nome"));
+	            bean.setCategoria(rs.getString("categoria"));
+	            bean.setDescrizione(rs.getString("descrizione"));
+	            bean.setStato(rs.getBoolean("stato"));
+	            bean.setLingua(rs.getString("lingua"));
+	            bean.setIva(rs.getInt("iva"));
+	            bean.setPrezzo(rs.getFloat("prezzo"));
+	            bean.setStock(rs.getInt("stock"));
+	            bean.setLinkAccesso(rs.getString("linkAccesso"));
+	            bean.setlinkImg(rs.getString("linkImg"));
+	            bean.setEliminato(rs.getBoolean("eliminato"));
+
+
+	            products.add(bean);
+	        }
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+
+	    return products;
 	}
+
 	
 	public synchronized String doRetrieveByName(String name) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
-		String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME+ " WHERE nome LIKE ? ";
+		String selectSql = "SELECT * FROM " + ProductModelDS.TABLE_NAME + " WHERE nome LIKE ? AND eliminato = false";
+
 		
 		StringBuilder json = new StringBuilder();
 		try {
@@ -243,5 +298,35 @@ public class ProductModelDS implements ProductModel {
             .replace("\r", "\\r")
             .replace("\t", "\\t");
 }
+	
+	public void doUpdate(ProductBean product) throws SQLException {
+	    Connection connection = null;
+	    PreparedStatement ps = null;
+
+	    String updateSQL = "UPDATE prodotto SET nome = ?, descrizione = ?, prezzo = ?, stock = ?, stato = ?, eliminato = ? WHERE idProdotto = ?";
+
+	    try {
+	        connection = ds.getConnection();
+	        ps = connection.prepareStatement(updateSQL);
+
+	        ps.setString(1, product.getNome());
+	        ps.setString(2, product.getDescrizione());
+	        ps.setDouble(3, product.getPrezzo());
+	        ps.setInt(4, product.getStock());
+	        ps.setBoolean(5, product.getStato());
+	        ps.setBoolean(6, product.isEliminato());
+	        ps.setInt(7, product.getIdProdotto());
+
+	        ps.executeUpdate();
+
+	    } finally {
+	        try {
+	            if (ps != null) ps.close();
+	        } finally {
+	            if (connection != null) connection.close();
+	        }
+	    }
+	}
+
 	
 }

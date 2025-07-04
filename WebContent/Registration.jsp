@@ -4,32 +4,49 @@
 <html>
 <head>
 <meta charset="UTF-8">		
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Registration page</title>
-<link rel = "stylesheet" type = "text/css" href="Login.css">
+<link rel = "stylesheet" type = "text/css" href="Registration.css">
 
 </head>
 <body>
-<jsp:include page="NavBar.jsp"/>
+<div class ="container">
+	<div class="heading">Benvenuto in SpeakUp!</div>
+<form class="form" action="UserControl?action=registration" method="post" onsubmit="return validationEmail()">
+  
+  
+  <input class="input" type="email" name="email" placeholder="E-mail" required>
+  
 
-<div>
-<form id = "login" action = "UserControl?action=registration" method = "post" onsubmit="return validationEmail()">
-<h1>Registration</h1>
-email: <input type = "text" name = "email" id = "email" placeholder = "insert your email.." required><br><br> 
-nome: <input type = "text" name = "nome" placeholder = "insert your name.." required><br><br> 
-cognome: <input type = "text" name = "cognome" placeholder = "insert your surname.." required><br><br> 
-indirizzo: <input type = "text" name = "indirizzo" placeholder = "insert your address.." required><br><br> 
-città: <input type = "text" name = "citta" placeholder = "insert your city.." required><br><br> 
-provincia: <input type = "text" name = "provincia" required><br><br> 	
-cap: <input type = "number" name = "cap" required><br><br> 
-password: <input type = "password" name = "password" placeholder = "insert your password.." required><br><br> 
-<input type = "submit" value ="registrati"> 
-<br>
-<br>
+  <div class="row">
+    <input class="input half" type="text" name="nome" placeholder="Nome" required>
+    <input class="input half" type="text" name="cognome" placeholder="Cognome" required>
+  </div>
+  
+  
+  <div class="row">
+    <input class="input half" type="text" name="indirizzo" placeholder="Indirizzo" required>
+    <input class="input half" type="text" name="citta" placeholder="Città" required>
+  </div>
+  
+  
+  <div class="row">
+    <input class="input half" type="text" name="provincia" placeholder="Provincia" required>
+    <input class="input half" type="number" name="cap" placeholder="CAP" required>
+  </div>
+  
+ 
+  <input class="input" type="password" name="password" placeholder="Password" required>
+  
+  
+  <input class="login-button" type="submit" value="Registrati">
 
-<h2>Sei già registrato? </h2>
-<a href = "Login.jsp">Clicca qui per il Login!</a>
-</form>
-</div>
+  <div class="agreement">
+    <a href="Login.jsp">Sei già registrato? Clicca qui per il login!</a>
+  </div>
+  </form>
+  </div>
+
 
 
 <script>

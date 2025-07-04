@@ -89,9 +89,13 @@ public class ProductControl extends HttpServlet {
  	
 				 	//elimina un pordotto dal db
 				} else if (action.equalsIgnoreCase("delete")) {
-					
-					int id = Integer.parseInt(request.getParameter("id"));
-					model.doDelete(id);
+				    String id = request.getParameter("id");
+				    if(id != null) {
+				        ProductBean bean = model.doRetrieveByKey(Integer.parseInt(id));
+				        bean.setEliminato(true); // ← Usa questo invece di stato
+				        model.doUpdate(bean);
+				    }
+				
 					
 				} else if (action.equalsIgnoreCase("insert")) {
 					
@@ -189,25 +193,35 @@ public class ProductControl extends HttpServlet {
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
 		}
-
+		
 		String sort = request.getParameter("sort");
 
 		try {
-			request.removeAttribute("products");
-			request.setAttribute("products", model.doRetrieveAll(sort));
+		    request.removeAttribute("products");
+		    
+		    // Controlla se l'utente è admin
+		    Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
+		    
+		    if(Boolean.TRUE.equals(isAdmin)) {
+		        // Per l'admin, mostra tutti i prodotti (inclusi quelli eliminati)
+		        request.setAttribute("products", model.doRetrieveAllForAdmin(sort));
+		    } else {
+		        // Per gli utenti normali, mostra solo i prodotti attivi
+		        request.setAttribute("products", model.doRetrieveAll(sort));
+		    }
 		} catch (SQLException e) {
-			System.out.println("Error:" + e.getMessage());
+		    System.out.println("Error:" + e.getMessage());
 		}
 
 		RequestDispatcher dispatcher;
 		Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
-		
+
 		if(Boolean.TRUE.equals(isAdmin)) {
-			dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
-			dispatcher.forward(request, response); 
-			return;
+		    dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
+		    dispatcher.forward(request, response); 
+		    return;
 		}
-		
+
 		dispatcher = getServletContext().getRequestDispatcher("/ProductView.jsp");
 		dispatcher.forward(request, response); 
 		return;
@@ -221,6 +235,8 @@ public class ProductControl extends HttpServlet {
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
     }
+    
+    
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

@@ -3,26 +3,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">		
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">		
 <title>Registration page</title>
-<link rel = "stylesheet" type = "text/css" href="Login.css">
+<link rel = "stylesheet" type = "text/css" href="Registration.css">
 
 </head>
 <body>
-<form action = "AdminControl?action=registration" method = "post" onsubmit="return validationEmail()">
-<h1>Registration page</h1>
-email: <input type = "text" name = "email" placeholder = "insert your email.." required><br><br> 
-nome: <input type = "text" name = "nome" placeholder = "insert your name.." required><br><br> 
-cognome: <input type = "text" name = "cognome" placeholder = "insert your surname.." required><br><br> 
-password: <input type = "password" name = "password" placeholder = "insert your password.." required><br><br> 
-<input type = "submit" value ="registrati"> 
+<div class = "container">
+	<div class = "heading">Benvenuto Admin!</div>
+<form class="form" action = "AdminControl?action=registration" method = "post" onsubmit="return validationEmail()">
 
-<br>
-<br>
+<input class="input" type="email" name="email" placeholder="E-mail" required>
+<input class="input" type="text" name="nome" placeholder="Nome" required>
+<input class="input" type="text" name="cognome" placeholder="Cognome" required>
+<input class="input" type="password" name="password" placeholder="Password" required> 
+  
+<input class="login-button" type="submit" value="Registrati">
 
-<h2>Sei già registrato? </h2>
-<a href = "Login.jsp">Clicca qui per il Login!</a>
+  <div class="agreement">
+    <a href="Login.jsp">Sei già registrato? Clicca qui per il login!</a>
+  </div>
 </form>
+</div>
 
 <script>
 function validationEmail() {

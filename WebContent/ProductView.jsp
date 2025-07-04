@@ -28,7 +28,7 @@
 <div class="element-container">
 <%
     for (ProductBean bean : products) {
-        if (bean.getCategoria() != null && bean.getCategoria().toLowerCase().contains("corso")) {
+        if (bean.getCategoria() != null && bean.getCategoria().toLowerCase().contains("corso") && bean.getStato() && !bean.isEliminato()) {
             boolean isFavorite = false;
             if (favoriteProducts != null) {
                 for (ProductBean fav : favoriteProducts) {
@@ -40,7 +40,7 @@
             }
 %>
     <div class="element-card">
-        <form action="FavoriteController" method="post">
+        <form class = "favorite-button" action="FavoriteController" method="post">
             <input type="hidden" name="productId" value="<%= bean.getIdProdotto() %>" />
             <button type="submit" name="action" value="<%= isFavorite ? "remove" : "add" %>" class="favorite-button" aria-label="Toggle Favorite">
                 <% if (isFavorite) { %>
@@ -72,7 +72,7 @@
 <div class="element-container">
 <%
     for (ProductBean bean : products) {
-        if (bean.getCategoria() != null && !bean.getCategoria().toLowerCase().contains("corso") && bean.getStock() > 0) {
+        if (bean.getCategoria() != null && !bean.getCategoria().toLowerCase().contains("corso") && bean.getStock() > 0 && bean.getStato() && !bean.isEliminato()) {
             boolean isFavorite = false;
             if (favoriteProducts != null) {
                 for (ProductBean fav : favoriteProducts) {

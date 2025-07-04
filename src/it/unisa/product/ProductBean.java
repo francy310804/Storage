@@ -12,6 +12,7 @@ public class ProductBean {
 	int stock;
 	String linkAccesso;
 	String linkImg;
+	boolean eliminato;
 	
 	public ProductBean(){
 		idProdotto = -1;
@@ -25,6 +26,7 @@ public class ProductBean {
 		stock = 0;
 		linkAccesso = "";
 		linkImg = "";
+		eliminato = false;
 	}
 	
 	public int getIdProdotto() {
@@ -112,6 +114,14 @@ public class ProductBean {
 
 	public void setlinkImg(String linkImg) {
 		this.linkImg = linkImg;
+	}
+	
+	public boolean isEliminato() {
+	    return eliminato;
+	}
+
+	public void setEliminato(boolean eliminato) {
+	    this.eliminato = eliminato;
 	}
 	
 }
