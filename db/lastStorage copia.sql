@@ -12,8 +12,9 @@ CREATE TABLE `Prodotto` (
   `stock` int DEFAULT NULL,
   `linkAccesso` varchar(200) DEFAULT NULL,
   `linkImg` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`idProdotto`));
-  
+  `eliminato` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`idProdotto`)
+);
   CREATE TABLE `Utenti` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
