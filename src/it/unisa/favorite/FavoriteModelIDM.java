@@ -80,12 +80,14 @@ public class FavoriteModelIDM implements FavoriteModel {
 
         List<ProductBean> favorites = new ArrayList<>();
 
-        String selectSQL = 
+        // MODIFICA: Aggiunto p.eliminato nella SELECT per recuperare anche i prodotti eliminati
+        String selectSQL =
             "SELECT p.idProdotto, p.nome, p.categoria, p.descrizione, p.stato, p.lingua, " +
-            "p.iva, p.prezzo, p.stock, p.linkAccesso, p.linkImg " +
+            "p.iva, p.prezzo, p.stock, p.linkAccesso, p.linkImg, p.eliminato " +
             "FROM user_favorites uf " +
             "JOIN Prodotto p ON uf.product_id = p.idProdotto " +
             "WHERE uf.user_id = ?";
+            // IMPORTANTE: Nessun filtro su p.eliminato, così recupera tutti i prodotti preferiti
 
         try {
             connection = DriverManagerConnectionPool.getConnection();
@@ -108,6 +110,8 @@ public class FavoriteModelIDM implements FavoriteModel {
                 product.setStock(rs.getInt("stock"));
                 product.setLinkAccesso(rs.getString("linkAccesso"));
                 product.setlinkImg(rs.getString("linkImg"));
+                // MODIFICA: Aggiungi il campo eliminato al ProductBean
+                product.setEliminato(rs.getBoolean("eliminato"));
 
                 favorites.add(product);
             }
@@ -121,6 +125,44 @@ public class FavoriteModelIDM implements FavoriteModel {
             }
         }
         return favorites;
+        
     }
+    	 //rimuove tutti gli elementi eliminati dalla wishlist
+        public synchronized int removeDeletedProductsFromFavorites(int userId) throws SQLException {
+            Connection connection = null;
+            PreparedStatement preparedStatement = null;
+            int deletedCount = 0;
+
+            String deleteSQL = "DELETE FROM " + FavoriteModelIDM.TABLE_NAME + 
+                              " WHERE user_id = ? AND product_id IN " +
+                              "(SELECT idProdotto FROM Prodotto WHERE eliminato = true)";
+
+            try {
+                connection = DriverManagerConnectionPool.getConnection();
+                preparedStatement = connection.prepareStatement(deleteSQL);
+                preparedStatement.setInt(1, userId);
+
+                deletedCount = preparedStatement.executeUpdate();
+                connection.commit();
+
+            } catch (SQLException e) {
+                if (connection != null) {
+                    connection.rollback();
+                }
+                throw e;
+            } finally {
+                try {
+                    if (preparedStatement != null)
+                        preparedStatement.close();
+                } finally {
+                    if (connection != null) {
+                        DriverManagerConnectionPool.releaseConnection(connection);
+                    }
+                }
+            }
+            
+            return deletedCount;
+        }
+    }
+    
    
-}

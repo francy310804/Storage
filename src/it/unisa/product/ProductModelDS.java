@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import it.unisa.DriverManagerConnectionPool;
 import it.unisa.order.ItemOrder;
 
 import java.sql.Statement;
@@ -324,6 +325,36 @@ public class ProductModelDS implements ProductModel {
 	            if (ps != null) ps.close();
 	        } finally {
 	            if (connection != null) connection.close();
+	        }
+	    }
+	}
+	
+	@Override
+	public synchronized void doRestore(int id) throws SQLException {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    
+	    String updateSQL = "UPDATE " + TABLE_NAME + " SET eliminato = false WHERE idProdotto = ?";
+	    
+	    try {
+	        connection = DriverManagerConnectionPool.getConnection();
+	        preparedStatement = connection.prepareStatement(updateSQL);
+	        preparedStatement.setInt(1, id);
+	        
+	        preparedStatement.executeUpdate();
+	        connection.commit();
+	    } catch (SQLException e) {
+	        if (connection != null) {
+	            connection.rollback();
+	        }
+	        throw e;
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                DriverManagerConnectionPool.releaseConnection(connection);
 	        }
 	    }
 	}

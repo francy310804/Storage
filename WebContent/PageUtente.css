@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+body{
+	background : lightblue;
+}
+
+h1{
+    text-align: top-left;
+    font-weight: 900;
+    font-size: 2rem;
+    color: rgb(16, 137, 211);
+}
+
+
+.paragrafo {
+  font-style: auto;
+  font-size: 20px;
+}
+
+#logout-form {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.input {
+    width: 20%;
+    background: white;
+    border: none;
+    padding: 15px 10px;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 1rem;
+    box-shadow: #cff0ff 0px 10px 10px -5px;
+    border-inline: 2px solid transparent;
+    box-sizing: border-box;
+}
+
+.descrizione{
+	width: 120px;
+	margin-right: 10px
+}

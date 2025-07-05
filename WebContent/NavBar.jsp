@@ -41,8 +41,12 @@
     } 
   %>
   <a href="Carrello.jsp">Carrello</a>
-  <input type="text" id="search" placeholder="cerca..." autocomplete="off">
-  <div id="results"></div>
+  
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Cerca prodotti..." autocomplete="off">
+    <span class="search-icon">🔍</span>
+    <div id="results"></div>
+</div>
 
 </nav>
 

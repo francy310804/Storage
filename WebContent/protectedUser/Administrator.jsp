@@ -27,7 +27,6 @@
 </head>
 
 <body>
-<jsp:include page="../NavBar.jsp" />
 <h1>BENVENUTO AMMINISTRATORE <%= session.getAttribute("nome") %> </h1>
 
 <p>
@@ -46,7 +45,7 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
     <button data-target="Utenti">Visualizza utenti</button>
 </div>
 
-<!-- Sezione Corsi -->
+<!-- Sezione Corsi (modificata per includere anche quelli eliminati) -->
 <div id="ProdottiCorsi" class="element-container">
     <%
         if (products != null && !products.isEmpty()) {
@@ -66,9 +65,16 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
         
         <div class="element-actions">
             <% if (!bean.isEliminato()) { %>
-                <a href="product?action=delete&id=<%=bean.getIdProdotto()%>">Delete</a>
+                <a href="product?action=delete&id=<%=bean.getIdProdotto()%>" 
+                   onclick="return confirm('Sei sicuro di voler eliminare questo corso?')">
+                   Delete
+                </a>
             <% } else { %>
-                <span style="color: gray;">Eliminato</span>
+                <a href="product?action=restore&id=<%=bean.getIdProdotto()%>" 
+                   onclick="return confirm('Sei sicuro di voler ripristinare questo corso?')" 
+                   style="color: green; font-weight: bold;">
+                   Ripristina
+                </a>
             <% } %>
             <button class="details-btn" data-id="<%=bean.getIdProdotto()%>">Details</button>    
         </div>
@@ -80,16 +86,15 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
     %>
 </div>
 
-<!-- Sezione Materiali -->
+<!-- Sezione Materiali (modificata per includere anche quelli eliminati) -->
 <div id="ProdottiMateriali" class="element-container">
     <%
         if (products != null && !products.isEmpty()) {
             for (Object obj : products) {
                 ProductBean bean = (ProductBean) obj;
-                // Mostra solo i materiali (non corsi) con stock > 0
+                // Mostra tutti i materiali (non corsi), inclusi quelli eliminati
                 if (bean.getCategoria() != null && 
-                    !bean.getCategoria().toLowerCase().contains("corso") && 
-                    bean.getStock() > 0) {
+                    !bean.getCategoria().toLowerCase().contains("corso")) {
     %>
     <div class="element-card">
         <img class="element-image" src="<%= request.getContextPath() %>/<%= bean.getLinkImg() %>" alt="Immagine materiale">
@@ -104,9 +109,16 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
         
         <div class="element-actions">
             <% if (!bean.isEliminato()) { %>
-                <a href="product?action=delete&id=<%=bean.getIdProdotto()%>">Delete</a>
+                <a href="product?action=delete&id=<%=bean.getIdProdotto()%>" 
+                   onclick="return confirm('Sei sicuro di voler eliminare questo materiale?')">
+                   Delete
+                </a>
             <% } else { %>
-                <span style="color: gray;">Eliminato</span>
+                <a href="product?action=restore&id=<%=bean.getIdProdotto()%>" 
+                   onclick="return confirm('Sei sicuro di voler ripristinare questo materiale?')" 
+                   style="color: green; font-weight: bold;">
+                   Ripristina
+                </a>
             <% } %>
             <button class="details-btn" data-id="<%=bean.getIdProdotto()%>">Details</button>   
         </div>

@@ -24,7 +24,6 @@ public class ProductControl extends HttpServlet {
 	
     public ProductControl() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -44,12 +43,10 @@ public class ProductControl extends HttpServlet {
 					String idParam = request.getParameter("id");
 				
 					if (idParam == null || idParam.isEmpty()) {
-					    // Gestisci il caso in cui manca l'id: es. risposta di errore o redirect
 					    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parametro id mancante");
 					    return;
 					}
 					
-
 					int id;
 					try {
 					    id = Integer.parseInt(idParam);
@@ -60,12 +57,17 @@ public class ProductControl extends HttpServlet {
 					
 					ProductBean product = model.doRetrieveByKey(id);
 					
-					    String requestedWith = request.getHeader("X-Requested-With");
-					    
-
-					    if ("XMLHttpRequest".equals(requestedWith)) {
-					        response.setContentType("application/json");
-					        response.setCharacterEncoding("UTF-8");
+					// NULL CHECK ADDED HERE
+					if (product == null) {
+					    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Prodotto non trovato");
+					    return;
+					}
+					
+					String requestedWith = request.getHeader("X-Requested-With");
+					
+					if ("XMLHttpRequest".equals(requestedWith)) {
+					    response.setContentType("application/json");
+					    response.setCharacterEncoding("UTF-8");
 
 					    PrintWriter out = response.getWriter();
 					    String json = "{"
@@ -80,23 +82,32 @@ public class ProductControl extends HttpServlet {
 					            + "\"prezzo\":" + product.getPrezzo()
 					            + "}";
 					    	
-					        out.print(json);
-					        out.flush();
-					        out.close();
-					        return;
-					        
-					    }
+					    out.print(json);
+					    out.flush();
+					    out.close();
+					    return;
+					}
  	
-				 	//elimina un pordotto dal db
+				 	//elimina un prodotto dal db
 				} else if (action.equalsIgnoreCase("delete")) {
-				    String id = request.getParameter("id");
-				    if(id != null) {
-				        ProductBean bean = model.doRetrieveByKey(Integer.parseInt(id));
-				        bean.setEliminato(true); // ← Usa questo invece di stato
-				        model.doUpdate(bean);
+				    String idParam = request.getParameter("id");
+				    if(idParam != null && !idParam.isEmpty()) {
+				        try {
+				            int id = Integer.parseInt(idParam);
+				            ProductBean bean = model.doRetrieveByKey(id);
+				            
+				            // NULL CHECK ADDED HERE
+				            if (bean != null) {
+				                bean.setEliminato(true);
+				                model.doUpdate(bean);
+				            }
+				        } catch (NumberFormatException e) {
+				            System.err.println("ID prodotto non valido per eliminazione: " + idParam);
+				        }
 				    }
+				    response.sendRedirect(request.getContextPath() + "/product");
+				    return;
 				
-					
 				} else if (action.equalsIgnoreCase("insert")) {
 					
 					String name = request.getParameter("nome");
@@ -109,69 +120,105 @@ public class ProductControl extends HttpServlet {
 					String ivaParam = request.getParameter("IVA");
 					int iva = 0;
 					if (ivaParam != null && !ivaParam.isEmpty()) {
-					    iva = Integer.parseInt(ivaParam);
-					} else {
-					    // valore di default, oppure errore custom
-					    iva = 0;
+					    try {
+					        iva = Integer.parseInt(ivaParam);
+					    } catch (NumberFormatException e) {
+					        iva = 0;
+					    }
 					}
 					
-					float price = Float.parseFloat(request.getParameter("prezzo"));
-					int quantity = Integer.parseInt(request.getParameter("stock"));
-					String link = request.getParameter("linkaccesso");
-					String linkImg = request.getParameter("linkImg");
-					ProductBean bean = new ProductBean();
-					bean.setNome(name);
-					bean.setCategoria(categoria);
-					bean.setDescrizione(description);
-					bean.setStato(stato);
-					bean.setLingua(lingua);
-					bean.setIva(iva);
-					bean.setPrezzo(price);
-					bean.setStock(quantity);
-					bean.setLinkAccesso(link);
-					bean.setlinkImg(linkImg);
-					model.doSave(bean);
-					response.sendRedirect("/protectedUser/Administrator.jsp");
-					return;
+					try {
+					    float price = Float.parseFloat(request.getParameter("prezzo"));
+					    int quantity = Integer.parseInt(request.getParameter("stock"));
+					    String link = request.getParameter("linkaccesso");
+					    String linkImg = request.getParameter("linkImg");
+					    
+					    ProductBean bean = new ProductBean();
+					    bean.setNome(name);
+					    bean.setCategoria(categoria);
+					    bean.setDescrizione(description);
+					    bean.setStato(stato);
+					    bean.setLingua(lingua);
+					    bean.setIva(iva);
+					    bean.setPrezzo(price);
+					    bean.setStock(quantity);
+					    bean.setLinkAccesso(link);
+					    bean.setlinkImg(linkImg);
+					    
+					    model.doSave(bean);
+					    response.sendRedirect("/protectedUser/Administrator.jsp");
+					    return;
+					} catch (NumberFormatException e) {
+					    System.err.println("Errore nel parsing dei parametri numerici: " + e.getMessage());
+					    response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parametri numerici non validi");
+					    return;
+					}
 					
 				} else if(action.equalsIgnoreCase("add")) {
-					int id = Integer.parseInt(request.getParameter("id"));
-					HttpSession sessione = request.getSession();
-					Carrello carrello = (Carrello) sessione.getAttribute("carrello");
-					if(carrello == null)
-						carrello = new Carrello();
-					//ProductBean prodotto = model.doRetrieveByKey(id);
-					carrello.addCarrello(id);
-					sessione.setAttribute("carrello", carrello);
-					
-				    // Redirect dopo aver aggiunto al carrello
-				    response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
-				    return;  
-					
-					
-					//elimina un prodotto dal carrello
-				} else if(action.equalsIgnoreCase("remove")) {
-					int id = Integer.parseInt(request.getParameter("id"));
-					HttpSession sessione = request.getSession();
-					Carrello carrello = (Carrello) sessione.getAttribute("carrello");
-					
-					carrello.deleteCarrello(id);
-					sessione.setAttribute("carrello", carrello);
-				    RequestDispatcher dispatcher = request.getRequestDispatcher("/Carrello.jsp");
-				    dispatcher.forward(request, response);
-				    return;
-				} else if(action.equalsIgnoreCase("updateQuantity")) {
-				    int id = Integer.parseInt(request.getParameter("id"));
-				    int quantity = Integer.parseInt(request.getParameter("quantity"));
-				    HttpSession session = request.getSession();
-				    Carrello cart = (Carrello) session.getAttribute("carrello");
-
-				    if (cart != null) {
-				        cart.aggiornaQuantita(id, quantity); // metodo da implementare
+				    try {
+				        int id = Integer.parseInt(request.getParameter("id"));
+				        HttpSession sessione = request.getSession();
+				        Carrello carrello = (Carrello) sessione.getAttribute("carrello");
+				        if(carrello == null)
+				            carrello = new Carrello();
+				        
+				        carrello.addCarrello(id);
+				        sessione.setAttribute("carrello", carrello);
+				        
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;  
+				    } catch (NumberFormatException e) {
+				        System.err.println("ID prodotto non valido per aggiunta al carrello: " + request.getParameter("id"));
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
 				    }
+					
+				} else if(action.equalsIgnoreCase("remove")) {
+				    try {
+				        int id = Integer.parseInt(request.getParameter("id"));
+				        HttpSession sessione = request.getSession();
+				        Carrello carrello = (Carrello) sessione.getAttribute("carrello");
+				        
+				        if (carrello == null) {
+				            carrello = new Carrello();
+				            sessione.setAttribute("carrello", carrello);
+				        }
+				        
+				        carrello.deleteCarrello(id);
+				        sessione.setAttribute("carrello", carrello);
+				        
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
+				        
+				    } catch (NumberFormatException e) {
+				        System.err.println("ID prodotto non valido: " + request.getParameter("id"));
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
+				    } catch (Exception e) {
+				        System.err.println("Errore durante la rimozione dal carrello: " + e.getMessage());
+				        e.printStackTrace();
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
+				    }
+				
+				} else if(action.equalsIgnoreCase("updateQuantity")) {
+				    try {
+				        int id = Integer.parseInt(request.getParameter("id"));
+				        int quantity = Integer.parseInt(request.getParameter("quantity"));
+				        HttpSession session = request.getSession();
+				        Carrello cart = (Carrello) session.getAttribute("carrello");
 
-				    response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
-				    return;
+				        if (cart != null) {
+				            cart.aggiornaQuantita(id, quantity);
+				        }
+
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
+				    } catch (NumberFormatException e) {
+				        System.err.println("Parametri non validi per aggiornamento quantità: " + e.getMessage());
+				        response.sendRedirect(request.getContextPath() + "/Carrello.jsp");
+				        return;
+				    }
 				}
 				else if(action.equalsIgnoreCase("cerca")) {
 					response.setContentType("application/json");
@@ -189,9 +236,27 @@ public class ProductControl extends HttpServlet {
 				    }
 				    return;
 				}
+				
+				else if (action.equalsIgnoreCase("restore")) {
+				    try {
+				        int id = Integer.parseInt(request.getParameter("id"));
+				        model.doRestore(id);
+				        response.sendRedirect(request.getContextPath() + "/product");
+				        return;
+				    } catch (NumberFormatException e) {
+				        System.err.println("ID non valido per ripristino: " + request.getParameter("id"));
+				        response.sendRedirect(request.getContextPath() + "/product");
+				        return;
+				    } catch (Exception e) {
+				        e.printStackTrace();
+				        response.sendRedirect(request.getContextPath() + "/product");
+				        return;
+				    }
+				}
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
+			e.printStackTrace();
 		}
 		
 		String sort = request.getParameter("sort");
@@ -200,21 +265,38 @@ public class ProductControl extends HttpServlet {
 		    request.removeAttribute("products");
 		    
 		    // Controlla se l'utente è admin
-		    Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
+		    HttpSession session = request.getSession(false);
+		    Boolean isAdmin = null;
 		    
-		    if(Boolean.TRUE.equals(isAdmin)) {
-		        // Per l'admin, mostra tutti i prodotti (inclusi quelli eliminati)
-		        request.setAttribute("products", model.doRetrieveAllForAdmin(sort));
-		    } else {
-		        // Per gli utenti normali, mostra solo i prodotti attivi
-		        request.setAttribute("products", model.doRetrieveAll(sort));
+		    if (session != null) {
+		        isAdmin = (Boolean) session.getAttribute("admin");
 		    }
+		    
+		    // NULL CHECK AND SAFE RETRIEVAL
+		    List<ProductBean> products = null;
+		    if(Boolean.TRUE.equals(isAdmin)) {
+		        products = (List<ProductBean>) model.doRetrieveAllForAdmin(sort);
+		    } else {
+		        products = (List<ProductBean>) model.doRetrieveAll(sort);
+		    }
+		    
+		    // NULL CHECK FOR PRODUCTS LIST
+		    if (products != null) {
+		        request.setAttribute("products", products);
+		    }
+		    
 		} catch (SQLException e) {
 		    System.out.println("Error:" + e.getMessage());
+		    e.printStackTrace();
 		}
 
 		RequestDispatcher dispatcher;
-		Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
+		HttpSession session = request.getSession(false);
+		Boolean isAdmin = null;
+		
+		if (session != null) {
+		    isAdmin = (Boolean) session.getAttribute("admin");
+		}
 
 		if(Boolean.TRUE.equals(isAdmin)) {
 		    dispatcher = getServletContext().getRequestDispatcher("/user?action=all");
@@ -236,11 +318,7 @@ public class ProductControl extends HttpServlet {
                 .replace("\t", "\\t");
     }
     
-    
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
