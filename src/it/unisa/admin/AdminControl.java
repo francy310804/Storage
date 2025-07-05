@@ -54,7 +54,8 @@ String action = request.getParameter("action"); //vede che tio di azione deve es
 					AdminBean tmp = model.doRetrieveByKey(email);
 
 					if(tmp!= null && tmp.getEmail().equals(email)) { //se l'email già c'è l'utente viene mandato al Login
-						response.sendRedirect("ErrorPage.jsp");
+						request.getSession().setAttribute("failRegistration", true);
+						response.sendRedirect("Registration.jsp");
 					} else {	
 					//settiamo l'utente da salvare...		
 					AdminBean admin = new AdminBean();
@@ -65,7 +66,8 @@ String action = request.getParameter("action"); //vede che tio di azione deve es
 					String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 					admin.setPassword(hashedPassword);
 					model.doSave(admin);
-					response.sendRedirect("SuccRegistration.jsp");
+					request.getSession().removeAttribute("failRegistration");
+					response.sendRedirect("Login.jsp");
 					}
 				}
 			}

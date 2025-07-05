@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,16 +38,16 @@
  
   <input class="input" type="password" name="password" placeholder="Password" required>
   
-  
   <input class="login-button" type="submit" value="Registrati">
-
+  
+     <%if(session.getAttribute("failRegistration") != null){ %>
+    	<p class="error">Attenzione, l'utente già esiste</p>
+	<%} %> 
   <div class="agreement">
     <a href="Login.jsp">Sei già registrato? Clicca qui per il login!</a>
   </div>
   </form>
   </div>
-
-
 
 <script>
 function validationEmail() {

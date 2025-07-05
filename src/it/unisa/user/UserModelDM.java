@@ -186,7 +186,7 @@ public class UserModelDM implements UserModel{
 	}
 	
 	
-	/*public Collection<UserBean> doRetrieveAll() throws SQLException {
+	public Collection<UserBean> doRetrieveAll() throws SQLException {
 		
 	    Connection connection = null;
 	    PreparedStatement preparedStatement = null;
@@ -204,7 +204,18 @@ public class UserModelDM implements UserModel{
 			while(rs.next()) {
 				
 				UserBean a = new UserBean();
+				a.setId(rs.getInt("id"));
+				a.setCap(rs.getInt("cap"));
+				a.setCitta(rs.getString("citta"));
+				a.setCognome(rs.getString("cognome"));
+				a.setEmail(rs.getString("email"));
+				a.setIndirizzo(rs.getString("indirizzo"));
+				a.setNome(rs.getString("nome"));
+				a.setPassword(rs.getString("password"));
+				a.setProvincia(rs.getString("provincia"));
+				a.setRuolo(rs.getString("ruolo"));
 				
+				l.add(a);
 			}
 
 	        
@@ -215,16 +226,9 @@ public class UserModelDM implements UserModel{
 	        } finally {
 	            DriverManagerConnectionPool.releaseConnection(connection);
 	        }
-	    };*/
-	    
-	    
-	    
-
-	    
-		
-		
-		
-	//}
+	    };
+	    return l;
+	}
 
 	
 }

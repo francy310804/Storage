@@ -62,6 +62,8 @@ public class UserControl extends HttpServlet {
 			        	session.setAttribute("città", u.getCitta());
 			        	session.setAttribute("provincia", u.getProvincia());
 			        	session.setAttribute("Cap", u.getCap());
+
+			        	session.removeAttribute("failLogin");
 			        	session.setAttribute("user", u);
 			        	
 			        	//response.sendRedirect("protectedUser/PageUtente.jsp");
@@ -80,11 +82,13 @@ public class UserControl extends HttpServlet {
 			        	session.setAttribute("nome", a.getNome());
 			        	session.setAttribute("cognome", a.getCognome());
 			        	session.setAttribute("user", a);
-
+			        	
+			        	session.removeAttribute("failLogin");
 			        	response.sendRedirect("protectedUser/Administrator.jsp");
 						}
 					else {
-					    response.sendRedirect(request.getContextPath() + "/FailLogin.jsp");
+						request.getSession().setAttribute("failLogin", true);
+					    response.sendRedirect(request.getContextPath() + "/Login.jsp");
 					}
 						
 					}
@@ -94,7 +98,8 @@ public class UserControl extends HttpServlet {
 					UserBean tmp = model.doRetrieveByKey(email);
 
 					if(tmp!= null && tmp.getEmail().equals(email)) { //se l'email già c'è l'utente viene mandato al Login
-						response.sendRedirect("ErrorPage.jsp");
+						request.getSession().setAttribute("failRegistration", true);
+						response.sendRedirect("Registration.jsp");
 					} else {	
 					//settiamo l'utente da salvare...		
 					UserBean user = new UserBean();
@@ -109,7 +114,8 @@ public class UserControl extends HttpServlet {
 					user.setPassword(hashedPassword);
 					user.setProvincia(request.getParameter("provincia"));
 					model.doSave(user);
-					response.sendRedirect("SuccRegistration.jsp");
+					request.getSession().removeAttribute("failRegistration");
+					response.sendRedirect("Login.jsp");
 				}
 			} else if(action.equalsIgnoreCase("logout")) {
 			    HttpSession session = request.getSession(false); 
@@ -164,7 +170,22 @@ public class UserControl extends HttpServlet {
 					response.sendRedirect("Login.jsp");
 					return;
 					
-				 }
+				 }else if(action.equalsIgnoreCase("all")) {
+					 request.setAttribute("users", model.doRetrieveAll());
+						
+					 RequestDispatcher dispatcher;
+					 Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
+
+					 if(Boolean.TRUE.equals(isAdmin)) {
+					    dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
+					    dispatcher.forward(request, response); 
+					    return;
+						}else {
+						    dispatcher = getServletContext().getRequestDispatcher("ProductView.jsp");
+						    dispatcher.forward(request, response); 
+						    return;
+						}
+			}
 			}
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());

@@ -217,7 +217,7 @@ public class ProductControl extends HttpServlet {
 		Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
 
 		if(Boolean.TRUE.equals(isAdmin)) {
-		    dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
+		    dispatcher = getServletContext().getRequestDispatcher("/user?action=all");
 		    dispatcher.forward(request, response); 
 		    return;
 		}

@@ -14,5 +14,5 @@ public interface UserModel {
 	
 	public void doUpdate(String email, UserBean user) throws SQLException;
 		
-	//public Collection<UserBean> doRetrieveAll() throws SQLException;
+	public Collection<UserBean> doRetrieveAll() throws SQLException;
 }

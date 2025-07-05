@@ -43,6 +43,10 @@
   <url-pattern>/favorites</url-pattern>
   </servlet-mapping>
   
+  <error-page>
+    <error-code>404</error-code>
+    <location>/ErrorPage.jsp</location>
+	</error-page>
   
   <filter>
   	<filter-name>AuthFilter</filter-name>

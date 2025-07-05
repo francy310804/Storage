@@ -118,6 +118,10 @@ body {
     }
 }
 
+p.error{
+	padding-left: 10px;
+	color: red;
+}
 /* Responsive per mobile */
 @media (max-width: 480px) {
     body {
