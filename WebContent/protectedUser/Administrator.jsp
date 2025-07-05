@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" session="true" %>
-<%@ page import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello" %>
+<%@ page import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.user.UserBean" %>
 <%
     Boolean isAdmin = (Boolean) session.getAttribute("admin");
     Collection<?> products = (Collection<?>) request.getAttribute("products");
-    if(products == null) {
+  	Collection<?> users = (Collection<?>) request.getAttribute("users");
+  	if(products == null) {
         response.sendRedirect(request.getContextPath() + "/product");
         return; 
     }
     ProductBean product = (ProductBean) request.getAttribute("product");
+    
+
 %>
 
 <!DOCTYPE html>
@@ -20,62 +23,11 @@
     <link rel="stylesheet" type="text/css" href="ProductStyle.css">
     <title>Catalogo</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        .content-div {
-            display: none;
-            padding: 20px;
-            margin-top: 10px;
-            background-color: #d3eaff;
-            border: 1px solid #007acc;
-            border-radius: 8px;
-        }
-        .button-group{
-            margin-left: 10px;
-            width: 100%;
-        }
-        .button-group button {
-            margin: 10px 10px 10px 10px;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        #details-container{
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background-color: rgba(0,0,0,0.5); 
-            justify-content: center; 
-            align-items: center; 
-            z-index: 1000;
-        }
-        .element-container{
-            position: relative;
-            width: 100%; height: 100%;
-        }
-        .element-container form{ 
-            width: 100%; height: 100%; 
-        }
-        #details-background{
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            width: 300px; 
-            max-width: 90%; 
-            position: relative;
-        }
-        #close-popup{
-            position: absolute; 
-            top: 5px; 
-            right: 5px; 
-            font-weight: bold; 
-            cursor: pointer;
-        }
-    </style>
+
 </head>
 
 <body>
-
+<jsp:include page="../NavBar.jsp" />
 <h1>BENVENUTO AMMINISTRATORE <%= session.getAttribute("nome") %> </h1>
 
 <p>
@@ -168,7 +120,7 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
 
 <!-- Sezione Inserimento -->
 <div id="insert" class="element-container">
-    <form action="<%=request.getContextPath()%>/product?action=insert" method="post">
+    <form id="inserimento" action="<%=request.getContextPath()%>/product?action=insert" method="post">
         <label for="nome">Nome:</label><br> 
         <input name="nome" type="text" maxlength="20" required placeholder="inserisci nome"><br> 
         
@@ -204,10 +156,34 @@ In questa pagina puoi visualizzare il materiale del sito, apportare delle modifi
     </form>
 </div>
 
+
 <!-- Sezione Utenti -->
 <div class="element-container" id="Utenti">
-    <!-- Contenuto per visualizzare utenti -->
+	<table>
+	<tr>
+		<th>Id</th>
+		<th>Email</th>
+		<th>Cognome</th>
+		<th>Nome</th>
+	</tr>
+	 <%
+        if (users != null && !users.isEmpty()) {
+            for (Object obj : users) {
+                UserBean bean = (UserBean) obj;
+    %>
+    <tr>
+    	<th><%=bean.getId()%></th>
+    	<th><%=bean.getEmail() %></th>
+    	<th><%=bean.getCognome() %></th>
+    	<th><%=bean.getNome() %></th>
+    </tr>
+    <%}
+            } %>
+    </table>
 </div>
+
+
+
 
 <!-- Contenitore dettagli prodotti (UNICO) -->
 <div id="details-container">

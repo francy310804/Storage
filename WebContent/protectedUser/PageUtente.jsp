@@ -13,7 +13,6 @@
 <title>Benvenuto <%= session.getAttribute("nome") %></title>
 </head>
 <body>
-
 <h1>BENVENUTO <%= session.getAttribute("nome") %> </h1>
 <form action = "<%= request.getContextPath() %>/user?action=modifica" method = "post">
 <!-- fa comparire i dati dell'utente per l'eventuale modifica -->

@@ -18,6 +18,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Catalogo</title>
+    
 
 </head>
 <body>
@@ -40,7 +41,7 @@
             }
 %>
     <div class="element-card">
-        <form class = "favorite-button" action="FavoriteController" method="post">
+        <form action="FavoriteController" method="post">
             <input type="hidden" name="productId" value="<%= bean.getIdProdotto() %>" />
             <button type="submit" name="action" value="<%= isFavorite ? "remove" : "add" %>" class="favorite-button" aria-label="Toggle Favorite">
                 <% if (isFavorite) { %>

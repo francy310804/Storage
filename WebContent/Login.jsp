@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +21,9 @@
     <span class="forgot-password">
       <a href="#">Password dimenticata ?</a>
     </span>
-    
+    <%if(session.getAttribute("failLogin") != null){ %>
+    	<p class="error">Password/Email errate</p>
+	<%} %>    
     <input class="login-button" type="submit" value="Benvenuto!">
     
     <div class="agreement">

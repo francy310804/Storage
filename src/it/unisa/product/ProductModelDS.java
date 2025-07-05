@@ -286,7 +286,7 @@ public class ProductModelDS implements ProductModel {
 				if (connection != null)
 					connection.close();
 			}
-		}System.out.println("doRetrieveByName result: " + json.toString());
+		}
 	    return json.toString();
 	}
 	
