@@ -19,7 +19,7 @@
 <div>
 
 <div class="back">
-<a href ="ProductView.jsp">Ritorna alla Home</a>
+<a href = "<%=path%>/ProductView.jsp">Ritorna alla Home</a>
 </div>
 
 <form id="logout-form" action = "<%= request.getContextPath() %>/user?action=modifica" method = "post">
@@ -27,7 +27,6 @@
 <a href="<%= request.getContextPath() %>/UserControl?action=logout">
   <img src="<%= request.getContextPath() %>/images/logout.png" alt="Logout" style="width:40px; height:auto;">
 </a>
-</form>
 </div>
 
 <div class="form-row">
@@ -74,20 +73,20 @@
     In questa sezione puoi cambiare la tua password! Assicurati di inserire la tua vecchia password...
   </div>
 
-  <div class="form-row">
-    <input type="checkbox" name="check" value="true" id="changePass">
-    <label for="changePass">Clicca per cambiare la password</label>
-  </div>
+
 
   <div class="form-row">
     <label for="oldPass" class="descrizione">Vecchia password:</label>
-    <input class="input" type="text" name="oldPass" id="oldPass" placeholder="Inserisci la vecchia password">
+    <input class="input" type="text" name="oldPass" id="oldPass" placeholder="Inserisci la vecchia password" required>
   </div>
 
   <div class="form-row">
-    <label for="newPass" class="descrizione">Nuova password:</label>
-    <input class="input" type="text" name="newPass" id="newPass" placeholder="Inserisci la nuova password">
+    <label for="newPass" class="descrizione" required>Nuova password:</label>
+    <input class="input" type="text" name="newPass" id="newPass" placeholder="Inserisci la nuova password" required>
   </div>
 
   <input type="submit" value="Modifica dati">
 </div>
+
+</form>
+

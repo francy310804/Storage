@@ -17,11 +17,10 @@ import it.unisa.user.UserBean;
 public class FavoriteController extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    private FavoriteModelIDM favoriteModel;
+    private FavoriteModelIDM favoriteModel = new FavoriteModelIDM();
     
     public FavoriteController() {
         super();
-        favoriteModel = new FavoriteModelIDM();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
@@ -78,8 +77,10 @@ public class FavoriteController extends HttpServlet {
         
         String action = request.getParameter("action");
         
+        if(action != null) {
+        
         try {
-            if ("add".equals(action)) {
+            if ("add".equalsIgnoreCase(action)) {
                 // Aggiungi prodotto ai preferiti
                 String productIdStr = request.getParameter("productId");
                 if (productIdStr != null && !productIdStr.isEmpty()) {
@@ -91,21 +92,21 @@ public class FavoriteController extends HttpServlet {
                     
                     favoriteModel.addFavorite(favorite);
                     
-                    request.setAttribute("message", "Prodotto aggiunto ai preferiti!");
+              //   request.setAttribute("message", "Prodotto aggiunto ai preferiti!");
                 }
                 
-            } else if ("remove".equals(action)) {
+            } else if ("remove".equalsIgnoreCase(action)) {
                 // Rimuovi prodotto dai preferiti
-                String productIdStr = request.getParameter("id");
+                String productIdStr = request.getParameter("productId");
                 if (productIdStr != null && !productIdStr.isEmpty()) {
                     int productId = Integer.parseInt(productIdStr);
                     
                     favoriteModel.removeFavorite(user.getId(), productId);
                     
-                    request.setAttribute("message", "Prodotto rimosso dai preferiti!");
+                //    request.setAttribute("message", "Prodotto rimosso dai preferiti!");
                 }
                 
-            } else if ("cleanup".equals(action)) {
+            } else if ("cleanup".equalsIgnoreCase(action)) {
                 // NUOVA FUNZIONALITÀ: Rimuovi tutti i prodotti eliminati dai preferiti
                 int removedCount = favoriteModel.removeDeletedProductsFromFavorites(user.getId());
                 
@@ -115,7 +116,7 @@ public class FavoriteController extends HttpServlet {
                         (removedCount > 1 ? "i" : "") + " non disponibile" + 
                         (removedCount > 1 ? "i" : "") + " dai preferiti!");
                 } else {
-                    request.setAttribute("message", "Nessun prodotto non disponibile da rimuovere.");
+                //    request.setAttribute("message", "Nessun prodotto non disponibile da rimuovere.");
                 }
             }
             
@@ -124,13 +125,15 @@ public class FavoriteController extends HttpServlet {
             
         } catch (SQLException e) {
             e.printStackTrace();
-            request.setAttribute("error", "Errore nell'operazione sui preferiti: " + e.getMessage());
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/ErrorPage.jsp");
-            dispatcher.forward(request, response);
+        //    request.setAttribute("error", "Errore nell'operazione sui preferiti: " + e.getMessage());
+         //   RequestDispatcher dispatcher = request.getRequestDispatcher("/ErrorPage.jsp");
+         //   dispatcher.forward(request, response);
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "ID prodotto non valido");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/ErrorPage.jsp");
-            dispatcher.forward(request, response);
+         //   request.setAttribute("error", "ID prodotto non valido");
+         //   RequestDispatcher dispatcher = request.getRequestDispatcher("/ErrorPage.jsp");
+         //   dispatcher.forward(request, response);
         }
+        
+    }
     }
 }
