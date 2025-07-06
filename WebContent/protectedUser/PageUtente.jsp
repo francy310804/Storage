@@ -9,13 +9,19 @@
     String path = request.getContextPath();
 %>
 
-<link rel = "stylesheet" type = "text/css" href="<%= path %>/PageUtente.css">
+<link rel="stylesheet" type="text/css" href="<%= path %>/protectedUser/PageUtente.css">
+
 <title>Benvenuto <%= session.getAttribute("nome") %></title>
 </head>
 <body>
 <h1>Benvenuto <%= session.getAttribute("nome") %> </h1>
 <div class="paragrafo">Qui puoi cambiare i tuoi dati personali</div>
 <div>
+
+<div class="back">
+<a href ="ProductView.jsp">Ritorna alla Home</a>
+</div>
+
 <form id="logout-form" action = "<%= request.getContextPath() %>/user?action=modifica" method = "post">
 <!-- fa comparire i dati dell'utente per l'eventuale modifica -->
 <a href="<%= request.getContextPath() %>/UserControl?action=logout">
@@ -62,22 +68,26 @@
 
 
 
-<h3>Sezione cambio password</h3>
-<div class="paragrafo">In questa sezione puoi cambiare la tua password! 
-assicurati di inserire la tua vecchia password...</div>
+<div class="password-section">
+  <h2>Sezione cambio password</h2>
+  <div class="paragrafo">
+    In questa sezione puoi cambiare la tua password! Assicurati di inserire la tua vecchia password...
+  </div>
 
-<input type = "checkbox" name = "check" value = "true"> clicca per cambiare la password 
+  <div class="form-row">
+    <input type="checkbox" name="check" value="true" id="changePass">
+    <label for="changePass">Clicca per cambiare la password</label>
+  </div>
 
+  <div class="form-row">
+    <label for="oldPass" class="descrizione">Vecchia password:</label>
+    <input class="input" type="text" name="oldPass" id="oldPass" placeholder="Inserisci la vecchia password">
+  </div>
 
-vecchia password: <input type = "text" name = "oldPass" placeholder = "insert old password">
-<br>
-<br>
+  <div class="form-row">
+    <label for="newPass" class="descrizione">Nuova password:</label>
+    <input class="input" type="text" name="newPass" id="newPass" placeholder="Inserisci la nuova password">
+  </div>
 
-nuova passoword: <input type = "text" name = "newPass" placeholder = "insert new passowrd">
-
-<br><br>
-
-<input type = "submit" value = "modifica dati">
-
-<!--  <a href = "<%=request.getContextPath()%>/ProductView.jsp"> Ritorna allo store</a> -->
-</html>
+  <input type="submit" value="Modifica dati">
+</div>

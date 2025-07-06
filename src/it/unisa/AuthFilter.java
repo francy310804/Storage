@@ -23,5 +23,6 @@ public class AuthFilter implements Filter {
         } else {
             httpResponse.sendRedirect(httpRequest.getContextPath() + "/FailLogin.jsp");
         }
+        
     }
 }
