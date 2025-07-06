@@ -81,17 +81,34 @@ public class OrderControl extends HttpServlet {
 				    
 				} else if ("viewFatture".equals(action)) {
 				    HttpSession session = request.getSession(false);
+				    
+				    if((Boolean) session.getAttribute("admin") == false) {
 				    if (session == null || session.getAttribute("user") == null) {
 				        response.sendRedirect("Login.jsp");
 				        return;
 				    }
+				    } 
 				    
-				    UserBean a = (UserBean)session.getAttribute("user");
-				    int userId = a.getId();
-
+				    
+				    
+				    int userId = 0;
+				    
+				    String str = request.getParameter("id");
+				    if(str != null) {
+				    	userId = Integer.parseInt(str);	
+				    } else {
+				    
+				    	UserBean a = (UserBean)session.getAttribute("user");
+				    	userId = a.getId();
+				    
+				    }
+				    
+				   
 				    List<FatturaBean> fatture = model.RetrieveFattura(userId);
 
 				    request.setAttribute("fatture", fatture);
+				    
+
 				    RequestDispatcher dispatcher = request.getRequestDispatcher("/Ordini.jsp");
 				    dispatcher.forward(request, response);
 				    return;
@@ -196,6 +213,7 @@ public class OrderControl extends HttpServlet {
 			        dispatcher.forward(request, response);
 			        return;
 			        
+			        //scrittura recensione
 				} else if("review".equals(action)) {
 					
 					HttpSession session = request.getSession();
@@ -209,8 +227,12 @@ public class OrderControl extends HttpServlet {
 					r.setUserId(usr.getId());
 					r.setReviewDate(new Timestamp(System.currentTimeMillis()));					
 					model.doSaveReview(r);
-					response.sendRedirect("reviewSuccess.jsp");
-					return;
+					
+					
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/order?action=null");
+			        dispatcher.forward(request, response); 
+			        return;
+
 				}
 			
 			}
@@ -219,6 +241,7 @@ public class OrderControl extends HttpServlet {
 		}
 		
 		
+		//carica le recensioni di quel prodotto - da productStyle
 		try {
 
 			int id = Integer.parseInt(request.getParameter("productId"));
@@ -232,8 +255,6 @@ public class OrderControl extends HttpServlet {
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/writeReview.jsp");
 		dispatcher.forward(request, response); 
 		return;
-		
-		
 		
 	}
 

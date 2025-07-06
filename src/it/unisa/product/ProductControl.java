@@ -146,7 +146,7 @@ public class ProductControl extends HttpServlet {
 					    bean.setlinkImg(linkImg);
 					    
 					    model.doSave(bean);
-					    response.sendRedirect("/protectedUser/Administrator.jsp");
+					    response.sendRedirect(request.getContextPath() + "/protectedUser/Administrator.jsp");
 					    return;
 					} catch (NumberFormatException e) {
 					    System.err.println("Errore nel parsing dei parametri numerici: " + e.getMessage());

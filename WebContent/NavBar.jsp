@@ -1,71 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" session="true" %>
+	pageEncoding="UTF-8" session="true"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>SpeakUp</title>
-  <link rel="stylesheet" href="<%= request.getContextPath() %>/ProductStyle.css">
+<meta charset="UTF-8">
+<title>SpeakUp</title>
+<link rel="stylesheet"
+	href="<%= request.getContextPath() %>/ProductStyle.css">
 </head>
 <body>
-<div id="google_translate_element" style="text-align: right;"></div>
-<nav>
-  <h2>SpeakUp!</h2>
-  <a href="<%= request.getContextPath() %>/ProductView.jsp">Home</a>
+	<div id="google_translate_element" style="text-align: right;"></div>
+	<nav>
+		<h2>SpeakUp!</h2>
+		<a href="<%= request.getContextPath() %>/ProductView.jsp">Home</a>
 
-  <% 
+		<% 
     if (session.getAttribute("user") != null) {
     	%>
-	<a href="<%= request.getContextPath() %>/OrderControl?action=viewFatture">I miei ordini</a>  
-	<a href="<%= request.getContextPath() %>/Favorite.jsp">Wishlist</a>
-	 
-    <%
+		<a
+			href="<%= request.getContextPath() %>/OrderControl?action=viewFatture">I
+			miei ordini</a> <a href="<%= request.getContextPath() %>/Favorite.jsp">Wishlist</a>
+
+		<%
       Boolean isAdmin = (Boolean) session.getAttribute("admin");
       if (isAdmin != null && isAdmin) { 
   %>
-        <a href="<%= request.getContextPath() %>/protectedUser/Administrator.jsp">Area Utente</a>
-  <% 
+		<a
+			href="<%= request.getContextPath() %>/protectedUser/Administrator.jsp">Area
+			Utente</a>
+		<% 
       } else { 
   %>
-        <a href="<%= request.getContextPath() %>/protectedUser/PageUtente.jsp">Area Utente</a>
-  <% 
+		<a href="<%= request.getContextPath() %>/protectedUser/PageUtente.jsp">Area
+			Utente</a>
+		<% 
       } 
   %>
-      <a href="<%= request.getContextPath() %>/UserControl?action=logout">Logout</a>
-  <% 
+		<a href="<%= request.getContextPath() %>/UserControl?action=logout">Logout</a>
+		<% 
     } else { 
   %>
-      <a href="<%= request.getContextPath() %>/Login.jsp">Login</a>
-      <a href="<%= request.getContextPath() %>/Registration.jsp">Registrati</a>
-  <% 
+		<a href="<%= request.getContextPath() %>/Login.jsp">Login</a> <a
+			href="<%= request.getContextPath() %>/Registration.jsp">Registrati</a>
+		<% 
     } 
   %>
-  <a href="Carrello.jsp">Carrello</a>
-  
-  <div class="search-container">
-    <input type="text" id="search" placeholder="Cerca prodotti..." autocomplete="off">
-    <span class="search-icon">🔍</span>
-    <div id="results"></div>
-</div>
+		<a href="Carrello.jsp">Carrello</a>
 
-</nav>
+		<div class="search-container">
+			<input type="text" id="search" placeholder="Cerca prodotti..."
+				autocomplete="off"> <span class="search-icon">🔍</span>
+			<div id="results"></div>
+		</div>
 
-<div id="details-container">
-  <div>
-    <button id="close-popup">X</button>
-    <div id="popup-content"></div>
-  </div>
-</div>
+	</nav>
+
+	<div id="details-container">
+		<div>
+			<button id="close-popup">X</button>
+			<div id="popup-content"></div>
+		</div>
+	</div>
 
 
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+	<script type="text/javascript"
+		src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-<script>
+	<script>
   const contextPath = "<%= request.getContextPath() %>";
 </script>
 
 
-<script>
+	<script>
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'it',
@@ -75,7 +81,7 @@ function googleTranslateElementInit() {
 }
 </script>
 
-<script>
+	<script>
   const input = document.getElementById('search');
   const results = document.getElementById('results');
   let timeout = null;

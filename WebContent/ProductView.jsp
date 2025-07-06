@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="true" %>
-<%@ page import="java.util.*, it.unisa.product.ProductBean" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" session="true"%>
+<%@ page import="java.util.*, it.unisa.product.ProductBean"%>
 
 <%
     // Lista prodotti
@@ -16,18 +17,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <title>Catalogo</title>
-    
+<meta charset="UTF-8" />
+<title>Catalogo</title>
+
 
 </head>
 <body>
 
-<jsp:include page="NavBar.jsp" />
+	<jsp:include page="NavBar.jsp" />
 
-<h2>Corsi</h2>
-<div class="element-container">
-<%
+	<h2>Corsi</h2>
+	<div class="element-container">
+		<%
     for (ProductBean bean : products) {
         if (bean.getCategoria() != null && bean.getCategoria().toLowerCase().contains("corso") && bean.getStato() && !bean.isEliminato()) {
             boolean isFavorite = false;
@@ -40,38 +41,47 @@
                 }
             }
 %>
-    <div class="element-card">
-        <form action="FavoriteController" method="post">
-            <input type="hidden" name="productId" value="<%= bean.getIdProdotto() %>" />
-            <button type="submit" name="action" value="<%= isFavorite ? "remove" : "add" %>" class="favorite-button" aria-label="Toggle Favorite">
-                <% if (isFavorite) { %>
-                    <span class="filled-heart">&#10084;</span>
-                <% } else { %>
-                    <span class="empty-heart">&#9825;</span>
-                <% } %>
-            </button>
-        </form>
+		<div class="element-card">
+			<form action="favorites" method="post">
+				<input type="hidden" name="productId"
+					value="<%= bean.getIdProdotto() %>" />
+				<button type="submit" name="action"
+					value="<%= isFavorite ? "remove" : "add" %>"
+					class="favorite-button" aria-label="Toggle Favorite">
+					<% if (isFavorite) { %>
+					<span class="filled-heart">&#10084;</span>
+					<% } else { %>
+					<span class="empty-heart">&#9825;</span>
+					<% } %>
+				</button>
+			</form>
 
-        <img class="element-image" src="<%= request.getContextPath() + "/" + bean.getLinkImg() %>" alt="Immagine corso" />
-        <h3 class="element-title"><%= bean.getNome() %></h3>
-        <p class="element-description"><%= bean.getDescrizione() %></p>
-        <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
+			<img class="element-image"
+				src="<%= request.getContextPath() + "/" + bean.getLinkImg() %>"
+				alt="Immagine corso" />
+			<h3 class="element-title"><%= bean.getNome() %></h3>
+			<p class="element-description"><%= bean.getDescrizione() %></p>
+			<p class="element-description">
+				Prezzo: €<%= bean.getPrezzo() %></p>
 
-        <div class="element-actions">
-            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
-            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Recensioni</a>
-            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi al carrello</a>
-        </div>
-    </div>
-<%
+			<div class="element-actions">
+				<button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
+				<a class="review"
+					href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Visualizza
+					prodotto</a> <a
+					href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi
+					al carrello</a>
+			</div>
+		</div>
+		<%
         }
     }
 %>
-</div>
+	</div>
 
-<h2>Materiali di supporto</h2>
-<div class="element-container">
-<%
+	<h2>Materiali di supporto</h2>
+	<div class="element-container">
+		<%
     for (ProductBean bean : products) {
         if (bean.getCategoria() != null && !bean.getCategoria().toLowerCase().contains("corso") && bean.getStock() > 0 && bean.getStato() && !bean.isEliminato()) {
             boolean isFavorite = false;
@@ -84,47 +94,56 @@
                 }
             }
 %>
-    <div class="element-card">
-        <form action="FavoriteController" method="post">
-            <input type="hidden" name="productId" value="<%= bean.getIdProdotto() %>" />
-            <button type="submit" name="action" value="<%= isFavorite ? "remove" : "add" %>" class="favorite-button" aria-label="Toggle Favorite">
-                <% if (isFavorite) { %>
-                    <span class="filled-heart">&#10084;</span>
-                <% } else { %>
-                    <span class="empty-heart">&#9825;</span>
-                <% } %>
-            </button>
-        </form>
+		<div class="element-card">
+			<form action="FavoriteController" method="post">
+				<input type="hidden" name="productId"
+					value="<%= bean.getIdProdotto() %>" />
+				<button type="submit" name="action"
+					value="<%= isFavorite ? "remove" : "add" %>"
+					class="favorite-button" aria-label="Toggle Favorite">
+					<% if (isFavorite) { %>
+					<span class="filled-heart">&#10084;</span>
+					<% } else { %>
+					<span class="empty-heart">&#9825;</span>
+					<% } %>
+				</button>
+			</form>
 
-        <img class="element-image" src="<%= request.getContextPath() + "/" + bean.getLinkImg() %>" alt="Immagine materiale" />
-        <h3 class="element-title"><%= bean.getNome() %></h3>
-        <p class="element-description"><%= bean.getDescrizione() %></p>
-        <p class="element-description">Prezzo: €<%= bean.getPrezzo() %></p>
+			<img class="element-image"
+				src="<%= request.getContextPath() + "/" + bean.getLinkImg() %>"
+				alt="Immagine materiale" />
+			<h3 class="element-title"><%= bean.getNome() %></h3>
+			<p class="element-description"><%= bean.getDescrizione() %></p>
+			<p class="element-description">
+				Prezzo: €<%= bean.getPrezzo() %></p>
 
-        <div class="element-actions">
-            <button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
-            <a class="review" href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Recensioni</a>
-            <a href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi al carrello</a>
-        </div>
-    </div>
-<%
+			<div class="element-actions">
+				<button class="details-btn" data-id="<%= bean.getIdProdotto() %>">Dettagli</button>
+				<a class="review"
+					href="<%= request.getContextPath() + "/order?productId=" + bean.getIdProdotto() %>">Visualizza
+					prodotto</a> <a
+					href="product?action=add&id=<%= bean.getIdProdotto() %>">Aggiungi
+					al carrello</a>
+			</div>
+		</div>
+		<%
         }
     }
 %>
-</div>
+	</div>
 
-<!-- Dettagli prodotto popup -->
-<div id="details-container" style="
-    display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
-    justify-content:center; align-items:center; z-index:1000;">
-    <div style="
-        background:white; padding:20px; border-radius:8px; width:300px; max-width:90%; position:relative;">
-        <button id="close-popup" style="position:absolute; top:5px; right:5px; font-weight:bold; cursor:pointer;">X</button>
-        <div id="popup-content"></div>
-    </div>
-</div>
+	<!-- Dettagli prodotto popup -->
+	<div id="details-container"
+		style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;">
+		<div
+			style="background: white; padding: 20px; border-radius: 8px; width: 300px; max-width: 90%; position: relative;">
+			<button id="close-popup"
+				style="position: absolute; top: 5px; right: 5px; font-weight: bold; cursor: pointer;">X</button>
+			<div id="popup-content"></div>
+		</div>
+	</div>
 
-<script>
+	<script>
 document.addEventListener('DOMContentLoaded', () => {
 	  console.log("DOM ready");
 	
@@ -206,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
-<script>
+	<script>
 
 document.getElementById('close-popup').addEventListener('click', () => {
 	  document.getElementById('details-container').style.display = 'none';

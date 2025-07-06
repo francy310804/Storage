@@ -139,25 +139,24 @@ public class UserControl extends HttpServlet {
 					String provincia = request.getParameter("provincia"); 
 					String cap = request.getParameter("cap");
 
-					
+				
 					
 					UserBean usr; 
 					
-					String checkValue = request.getParameter("check");
+					String oldPassword = request.getParameter("oldPass");
+					String newPassword = request.getParameter("newPass");
+
 					
-					//verifica se l'utente vuole anche cambiare password
-					if(checkValue != null && checkValue.equals("true")) {
-						String oldPassword = request.getParameter("oldPass");
-						
+					if(!oldPassword.isEmpty() && !newPassword.isEmpty()) {
 						//se la pass vecchia è stata messa correttamente si procede al cambio password
 						if(BCrypt.checkpw(oldPassword, oldUsr.getPassword())) {
-							String newPassword = request.getParameter("newPass");
 							String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 							usr = new UserBean(nome, cognome, email, citta, provincia, hashedPassword, indirizzo, Integer.parseInt(cap));
 							model.doUpdate(originalEmail, usr);
 						} else { //se la password vecchia non coincide
 							System.out.println("Password errata o mancante"); //lo implementiamo con qualche pagina di errore
 						}
+						
 						
 					} else { //se l'utente non vuole cambiare password
 						

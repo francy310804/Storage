@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,7 @@
 <title>Ordine confermato</title>
 </head>
 <body>
-<h2>ordine confermato!</h2>
-<h3>Verrai reindirizzato fra qualche secondo...</h3>
+	<h2>ordine confermato!</h2>
+	<h3>Verrai reindirizzato fra qualche secondo...</h3>
 </body>
 </html>

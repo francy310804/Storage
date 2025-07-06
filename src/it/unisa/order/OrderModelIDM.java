@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import it.unisa.product.*;
@@ -41,10 +43,14 @@ public class OrderModelIDM implements OrderModel {
 	        connection = ds.getConnection();
 	        connection.setAutoCommit(false); // disabilita autocommit
 
-	        String sqlOrdine = "INSERT INTO Orders (utente, order_date, total_price) VALUES (?, NOW(), ?)";
+	        LocalDateTime now = LocalDateTime.now();
+
+	        
+	        String sqlOrdine = "INSERT INTO Orders (utente, order_date, total_price) VALUES (?, ?, ?)";
 	        psOrdine = connection.prepareStatement(sqlOrdine, Statement.RETURN_GENERATED_KEYS);
 	        psOrdine.setInt(1, id);
-	        psOrdine.setDouble(2, totale);
+	        psOrdine.setTimestamp(2, Timestamp.valueOf(now));	       
+	        psOrdine.setDouble(3, totale);
 	        psOrdine.executeUpdate();
 
 	        rs = psOrdine.getGeneratedKeys();

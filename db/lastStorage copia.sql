@@ -1,3 +1,4 @@
+DROP DATABASE PROGETTOTSW;
 create database progettotsw;
 use progettotsw;
 CREATE TABLE `Prodotto` (
@@ -11,7 +12,7 @@ CREATE TABLE `Prodotto` (
   `prezzo` decimal(6,2) NOT NULL,
   `stock` int DEFAULT NULL,
   `linkAccesso` varchar(200) DEFAULT NULL,
-  `linkImg` varchar(200) DEFAULT NULL,
+  `linkImg` varchar(300) DEFAULT NULL,
   `eliminato` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`idProdotto`)
 );
@@ -27,6 +28,7 @@ CREATE TABLE `Prodotto` (
   `password` varchar(100) NOT NULL,
   `ruolo` varchar(20) NOT NULL DEFAULT 'utente',
   PRIMARY KEY (`id`));
+
   
   -- contiene l'ordine generico
 CREATE TABLE Orders (
@@ -34,7 +36,7 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 utente INT NOT NULL,
 order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 total_price DECIMAL(10,2) NOT NULL,
-FOREIGN KEY(utente) REFERENCES Utenti(id)
+FOREIGN KEY(utente) REFERENCES Utenti(id) ON DELETE NO ACTION
 );
 
 -- contiene l'ordine nel dettaglio
@@ -58,7 +60,7 @@ CREATE TABLE reviews (
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES Prodotto(idProdotto),
-    FOREIGN KEY (user_id) REFERENCES Utenti(id)
+    FOREIGN KEY (user_id) REFERENCES Utenti(id) ON DELETE NO ACTION
 );
 
 CREATE TABLE user_favorites (
