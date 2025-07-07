@@ -131,10 +131,10 @@
 			<div
 				style="display: flex; align-items: center; justify-content: space-between; margin-top: 15px;">
 				<!-- Pulsante di rimozione sempre disponibile -->
-				<form action="<%= request.getContextPath() %>/favorites"
+				<form action="${pageContext.request.contextPath}/favorites"
 					method="post" style="display: inline;">
 					<input type="hidden" name="action" value="remove"> <input
-						type="hidden" name="id" value="<%= bean.getIdProdotto() %>">
+						type="hidden" name="productId" value="<%= bean.getIdProdotto() %>">
 					<button type="submit"
 						style="background: none; border: none; padding: 0; margin: 0; line-height: 0; font-size: 0; width: 30px; height: 30px; cursor: pointer;"
 						title="Rimuovi dai preferiti">

@@ -92,7 +92,7 @@ public class OrderModelIDM implements OrderModel {
 	}
 		
 	
-	public synchronized List<FatturaBean> RetrieveFattura(int id) {
+	public synchronized List<FatturaBean> RetrieveFattura(int id) throws SQLException {
 	    Connection connection = null;
 	    PreparedStatement preparedStatement = null;
 	    List<FatturaBean> fatture = new ArrayList<>();
@@ -132,7 +132,48 @@ public class OrderModelIDM implements OrderModel {
 	    return fatture;
 	}
 	
-	public synchronized List<ItemOrder> RetrieveByFattura(int id) {
+	
+	public synchronized List<FatturaBean> doRetrieveAll() throws SQLException  {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    List<FatturaBean> fatture = new ArrayList<>();
+
+	    String selectSQL = "SELECT * FROM orders";
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(selectSQL);
+
+	        ResultSet rs = preparedStatement.executeQuery();
+
+	        while (rs.next()) {
+	            FatturaBean bean = new FatturaBean();
+	            bean.setIdFattura(rs.getInt("id"));
+	            bean.setIdUtente(rs.getInt("utente"));
+	            bean.setDataOrdine(rs.getTimestamp("order_date"));
+	            bean.setPrezzoTotale(rs.getFloat("total_price"));
+	            fatture.add(bean);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+		        if (connection != null) 
+		            connection.close();
+
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    return fatture;
+	}
+
+	
+	public synchronized List<ItemOrder> RetrieveByFattura(int id) throws SQLException  {
 	    Connection con = null;
 	    PreparedStatement ps = null;
 	    ResultSet rs = null;
@@ -182,7 +223,7 @@ public class OrderModelIDM implements OrderModel {
 	
 	
 	
-	public synchronized void doSaveReview(Review r) {
+	public synchronized void doSaveReview(Review r)  throws SQLException {
 	    Connection con = null;
 	    PreparedStatement ps = null;
 

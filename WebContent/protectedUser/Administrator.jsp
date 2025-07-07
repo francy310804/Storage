@@ -1,16 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" session="true"%>
 <%@ page
-	import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.user.UserBean"%>
+	import="java.util.*,it.unisa.product.ProductBean,it.unisa.order.Carrello,it.unisa.user.UserBean, it.unisa.order.*"%>
 <%
     Boolean isAdmin = (Boolean) session.getAttribute("admin");
     Collection<?> products = (Collection<?>) request.getAttribute("products");
   	Collection<?> users = (Collection<?>) request.getAttribute("users");
+    Collection<?> orders = (Collection<?>) request.getAttribute("orders");
+
   	if(products == null) {
         response.sendRedirect(request.getContextPath() + "/product");
         return; 
     }
+  	
+
+  
     ProductBean product = (ProductBean) request.getAttribute("product");
+   
+
     
 
 %>
@@ -48,6 +55,8 @@
 		<button data-target="ProdottiMateriali">Materiali</button>
 		<button data-target="insert">Inserimento</button>
 		<button data-target="Utenti">Visualizza utenti e ordini</button>
+		<button data-target="Ordini">Ordini</button>
+		
 	</div>
 
 	<!-- Sezione Corsi (modificata per includere anche quelli eliminati) -->
@@ -207,6 +216,30 @@
 	</div>
 
 
+
+<div class="element-container" id="Ordini">
+		<table>
+			<tr>
+				<th>Id</th>
+				<th>Utente</th>
+				<th>Data Ordine</th>
+				<th>Totale</th>
+			</tr>
+			<%
+        if (orders != null && !orders.isEmpty()) {
+            for (Object obj : orders) {
+                FatturaBean bean = (FatturaBean) obj;
+    %>
+			<tr>
+				<th><%=bean.getIdFattura()%></th>
+				<th><%=bean.getIdUtente()%></th>
+				<th><%=bean.getDataOrdine()%></th>
+				<th><%= String.format("%.2f", bean.getPrezzoTotale()) %></th>
+			</tr>
+			<%}
+            } %>
+		</table>
+	</div>
 
 
 

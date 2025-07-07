@@ -15,5 +15,7 @@ public interface OrderModel {
 	
 	public List<Review> getReviewsByProductId(int productId) throws SQLException;
 	
+	public  List<FatturaBean> doRetrieveAll() throws SQLException;
+	
 
 }

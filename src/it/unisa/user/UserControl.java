@@ -1,6 +1,7 @@
 package it.unisa.user;
 
 import java.io.IOException;
+import it.unisa.order.*;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -24,6 +25,8 @@ import it.unisa.admin.AdminModel;
 public class UserControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static UserModel model = new UserModelDM();
+	static OrderModelIDM model2 = new OrderModelIDM();
+
 
     public UserControl() {
         super();
@@ -176,12 +179,14 @@ public class UserControl extends HttpServlet {
 					 Boolean isAdmin = (Boolean) request.getSession().getAttribute("admin");
 
 					 if(Boolean.TRUE.equals(isAdmin)) {
-					    dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
+						request.setAttribute("orders", model2.doRetrieveAll());
+						dispatcher = getServletContext().getRequestDispatcher("/protectedUser/Administrator.jsp");
 					    dispatcher.forward(request, response); 
 					    return;
 						}else {
-						    dispatcher = getServletContext().getRequestDispatcher("ProductView.jsp");
+							dispatcher = getServletContext().getRequestDispatcher("ProductView.jsp");
 						    dispatcher.forward(request, response); 
+
 						    return;
 						}
 			}

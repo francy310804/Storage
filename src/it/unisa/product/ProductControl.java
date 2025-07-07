@@ -3,6 +3,7 @@ package it.unisa.product;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import it.unisa.order.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,6 +22,7 @@ import it.unisa.user.*;
 public class ProductControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static ProductModel model = new ProductModelDS();
+	static OrderModel model2 = new OrderModelIDM();
 	
     public ProductControl() {
         super();
@@ -272,7 +274,6 @@ public class ProductControl extends HttpServlet {
 		        isAdmin = (Boolean) session.getAttribute("admin");
 		    }
 		    
-		    // NULL CHECK AND SAFE RETRIEVAL
 		    List<ProductBean> products = null;
 		    if(Boolean.TRUE.equals(isAdmin)) {
 		        products = (List<ProductBean>) model.doRetrieveAllForAdmin(sort);
@@ -280,7 +281,6 @@ public class ProductControl extends HttpServlet {
 		        products = (List<ProductBean>) model.doRetrieveAll(sort);
 		    }
 		    
-		    // NULL CHECK FOR PRODUCTS LIST
 		    if (products != null) {
 		        request.setAttribute("products", products);
 		    }

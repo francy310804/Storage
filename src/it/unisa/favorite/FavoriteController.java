@@ -90,8 +90,11 @@ public class FavoriteController extends HttpServlet {
                     favorite.setUserId(user.getId());
                     favorite.setProductId(productId);
                     
+                    try {
                     favoriteModel.addFavorite(favorite);
-                    
+                    } catch(Exception e) {
+                    	e.printStackTrace();
+                    }
               //   request.setAttribute("message", "Prodotto aggiunto ai preferiti!");
                 }
                 
@@ -101,8 +104,13 @@ public class FavoriteController extends HttpServlet {
                 if (productIdStr != null && !productIdStr.isEmpty()) {
                     int productId = Integer.parseInt(productIdStr);
                     
-                    favoriteModel.removeFavorite(user.getId(), productId);
+                    try {
+                    	favoriteModel.removeFavorite(user.getId(), productId);
+                    } catch(Exception e) {
+                    	e.printStackTrace();
+                    }
                     
+                                        
                 //    request.setAttribute("message", "Prodotto rimosso dai preferiti!");
                 }
                 
