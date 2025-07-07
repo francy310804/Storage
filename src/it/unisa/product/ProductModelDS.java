@@ -359,5 +359,37 @@ public class ProductModelDS implements ProductModel {
 	    }
 	}
 
+	public synchronized void doUpdate(float prezzo, int iva, int id) throws SQLException {
+		
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+	    
+	    String updateSQL = "UPDATE " + TABLE_NAME + " SET prezzo = ?, iva = ? WHERE idProdotto = ?";
+	    
+	    try {
+	        connection = DriverManagerConnectionPool.getConnection();
+	        preparedStatement = connection.prepareStatement(updateSQL);
+	        preparedStatement.setFloat(1, prezzo);
+	        preparedStatement.setInt(2, iva);
+	        preparedStatement.setInt(3, id);
+	        
+	        preparedStatement.executeUpdate();
+	        connection.commit();
+	    } catch (SQLException e) {
+	        if (connection != null) {
+	            connection.rollback();
+	        }
+	        throw e;
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                DriverManagerConnectionPool.releaseConnection(connection);
+	        }
+	    }
+		
+	}
 	
 }

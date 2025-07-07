@@ -254,6 +254,20 @@ public class ProductControl extends HttpServlet {
 				        response.sendRedirect(request.getContextPath() + "/product");
 				        return;
 				    }
+				} else if(action.equalsIgnoreCase("modifica")) {
+					
+					if((Boolean)request.getSession().getAttribute("admin")) {
+						float prezzo = Float.parseFloat(request.getParameter("prezzo"));
+						int iva = Integer.parseInt(request.getParameter("IVA"));
+						int id = Integer.parseInt(request.getParameter("id"));
+						
+						
+						try {
+							model.doUpdate(prezzo, iva, id);
+						} catch(Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 		} catch (SQLException e) {

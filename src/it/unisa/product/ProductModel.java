@@ -23,4 +23,6 @@ public interface ProductModel {
 	public Collection<ProductBean> doRetrieveAllForAdmin(String order) throws SQLException;
 	
 	public void doRestore(int id) throws SQLException;
+	public void doUpdate(float prezzo, int iva, int id) throws SQLException;
+
 	}

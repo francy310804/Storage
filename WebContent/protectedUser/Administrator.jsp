@@ -243,6 +243,23 @@
 
 
 
+<div class="element-container" id="modifica">
+		<form id="inserimento"
+			action="<%=request.getContextPath()%>/product?action=modifica"
+			method="post">
+			<input type = "hidden" id = "productIdField" name ="id">
+					<br> <label for="IVA">IVA:</label><br> <input name="IVA"
+				type="number" max="100" required placeholder="inserisci l'IVA"><br>
+
+			<label for="Prezzo">Prezzo:</label><br> <input name="prezzo"
+				type="number" min="0" value="0" required><br>
+			<br> <input type="submit" value="Add"><input
+				type="reset" value="Reset">
+		</form>
+	</div>
+
+
+
 	<!-- Contenitore dettagli prodotti (UNICO) -->
 	<div id="details-container">
 		<div id="details-background">
@@ -250,6 +267,8 @@
 			<div id="popup-content"></div>
 		</div>
 	</div>
+
+
 
 	<script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -343,9 +362,16 @@ $(document).ready(function(){
 });
 </script>
 
+
+
 <script>
 $(document).ready(function() {
-	$
+	$(".modify-btn").click(function() {
+	    $("#modifica").show();
+	    var id = $(this).data("id");
+	    $("#productIdField").val(id);
+		$("#modifica").slideDown(300);
+	})
 })
 
 
